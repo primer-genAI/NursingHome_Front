@@ -12,6 +12,7 @@ class MainLayout extends StatefulWidget {
 
 class _MainLayoutState extends State<MainLayout> {
   int _selectedIndex = 1; // 기본 홈 페이지를 선택
+  bool isLoggedIn = false; // 로그인 상태를 관리
   final PageController _pageController = PageController(initialPage: 1);
 
   void _onItemTapped(int index) {
@@ -23,6 +24,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   void navigateToPatientInfoPage() {
     setState(() {
+      isLoggedIn = true; // 로그인 상태를 true로 변경
       _selectedIndex = 3; // PatientInfoPage로 인덱스를 변경
     });
     _pageController.jumpToPage(3);
@@ -38,9 +40,10 @@ class _MainLayoutState extends State<MainLayout> {
             _selectedIndex = index;
           });
         },
+        physics: NeverScrollableScrollPhysics(), // 스와이프 비활성화
         children: <Widget>[
           AINursePage(),    // AI Nurse Page
-          HomePage(onLogin: navigateToPatientInfoPage), // Home Page에서 로그인이 되면 PatientInfoPage로 이동
+          isLoggedIn ? PatientInfoPage() : HomePage(onLogin: navigateToPatientInfoPage), // 로그인 상태에 따라 페이지 변경
           NoticePage(),     // Notice Page
           PatientInfoPage(), // Patient Info Page
         ],
