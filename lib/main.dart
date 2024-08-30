@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import 'pages/home_page.dart';
+import 'main_layout.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,10 +11,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '효도AI',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomePage(),
+      debugShowCheckedModeBanner: false,
+      home: MainLayout(),
+
     );
   }
 }
