@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'patient_info_page.dart';
 
 class HomePage extends StatelessWidget {
+  final VoidCallback onLogin;
+
+  HomePage({required this.onLogin});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
+      body: SingleChildScrollView(
+        child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -38,12 +41,7 @@ class HomePage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PatientInfoPage()),
-                  );
-                },
+                onPressed: onLogin, // 로그인 버튼을 누르면 PatientInfoPage로 이동
                 child: Text('로그인', style: TextStyle(fontSize: 18)),
               ),
             ],

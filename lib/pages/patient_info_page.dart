@@ -17,6 +17,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('메인 페이지', style: TextStyle(fontSize: 28)),
+        automaticallyImplyLeading: true, // 뒤로가기 버튼 자동 추가
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -35,6 +36,8 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
       ),
     );
   }
+
+
 
   Widget _buildPatientInfoSection() {
     return Container(
