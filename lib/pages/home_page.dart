@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'patient_info_page.dart'; // 다음 페이지를 위한 import
+import '../global_state.dart';
 
 class HomePage extends StatefulWidget {
   final void Function(Map<String, dynamic>) onLogin;
@@ -142,6 +143,8 @@ class _HomePageState extends State<HomePage> {
                 onChanged: (String? newValue) {
                   setState(() {
                     _selectedPatientName = newValue;
+                    GlobalState.patient_id = _selectedPatientName;
+
                     // 환자명을 선택하면 해당하는 비밀번호를 비밀번호 필드에 자동 입력
                     passwordController.text = patientPasswords[newValue] ?? "";
                   });

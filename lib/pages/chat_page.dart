@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../global_state.dart';
 import 'dart:convert';
 
 class ChatPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _ChatPageState extends State<ChatPage> {
     });
 
     // final url = Uri.parse('http://localhost:8000/process-query');
-    final url = Uri.parse('http://104.198.208.62:5001/process-query');
+    final url = Uri.parse('http://104.198.208.62:5001/n1');
 
     final headers = {
       "accept": "application/json",
@@ -30,7 +31,7 @@ class _ChatPageState extends State<ChatPage> {
 
     final body = json.encode({
       "question": _controller.text,
-      "patient_id": "남A"
+      "patient_id": GlobalState.patient_id,
     });
 
     try {

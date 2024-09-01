@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../widgets/custom_nav_bar.dart';
+import '../global_state.dart';
+import 'ai_nurse.dart';
+import 'notice.dart';
 
 class PatientInfoPage extends StatefulWidget {
   final Map<String, dynamic> userInfo;
@@ -33,17 +37,39 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildPatientInfoSection(),
-              // 아래 코드들은 필요에 따라 다시 주석을 해제해 사용하세요.
-              // SizedBox(height: 30),
-              // _buildVitalSignsGraph(),
-              // SizedBox(height: 30),
-              // _buildAIConsultationSection(context),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: CustomNavBar(
+        currentIndex: GlobalState.selectedIndex,
+        onTap: (index) {
+          setState(() {
+            GlobalState.selectedIndex = index;
+          });
+
+          // 네비게이션 바의 선택에 따라 페이지 전환
+          if (index == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => AINursePage()),
+            );
+          } else if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => PatientInfoPage(userInfo: widget.userInfo)),
+            );
+          } else if (index == 2) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => NoticePage()),
+            );
+          }
+        },
+      ),
     );
   }
+
 
   Widget _buildPatientInfoSection() {
     final String name = widget.userInfo['이름'] ?? '이름 없음';
