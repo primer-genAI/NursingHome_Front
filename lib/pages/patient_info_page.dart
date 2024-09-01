@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'chat_page.dart';
-import 'chart_data.dart';
 
 class PatientInfoPage extends StatefulWidget {
+  final Map<String, dynamic> userInfo;
+
+  PatientInfoPage({required this.userInfo});
+
   @override
   _PatientInfoPageState createState() => _PatientInfoPageState();
 }
@@ -11,6 +12,12 @@ class PatientInfoPage extends StatefulWidget {
 class _PatientInfoPageState extends State<PatientInfoPage> {
   String selectedVitalSign = '혈압';
   String healthStatus = '양호';
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.userInfo); // 전달된 userInfo 데이터를 출력하여 확인
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +33,10 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildPatientInfoSection(),
-              SizedBox(height: 30),
-              _buildVitalSignsGraph(),
-              SizedBox(height: 30),
+              // 아래 코드들은 필요에 따라 다시 주석을 해제해 사용하세요.
+              // SizedBox(height: 30),
+              // _buildVitalSignsGraph(),
+              // SizedBox(height: 30),
               // _buildAIConsultationSection(context),
             ],
           ),
@@ -37,9 +45,21 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     );
   }
 
-
-
   Widget _buildPatientInfoSection() {
+    final String name = widget.userInfo['이름'] ?? '이름 없음';
+    final String gender = widget.userInfo['성별'] ?? '성별 없음';
+    final int age = widget.userInfo['나이'] ?? 0;
+    final String admissionDate = widget.userInfo['입원일'] ?? '날짜 없음';
+    final String roomNumber = widget.userInfo['병실번호'] ?? '병실 없음';
+    final String roomInfo = widget.userInfo['병실정보'] ?? '병실 없음';
+    final String doctor = widget.userInfo['담당의사'] ?? '담당의 없음';
+    final String imgPath = widget.userInfo['image_path'] ?? 'No Image';
+
+    final String imgUrl = 'http://104.198.208.62/assets/$imgPath';
+
+    final List<dynamic> diagList = widget.userInfo['질환명'] ?? [];
+    final String diag = diagList.join(', '); // 리스트를 문자열로 변환
+
     return Container(
       padding: EdgeInsets.all(20.0),
       decoration: BoxDecoration(
@@ -70,23 +90,27 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
             ],
           ),
           SizedBox(height: 16),
-          Row(
+          Center(
+            child: CircleAvatar(
+              radius: 100,  // 적절한 크기로 변경
+              backgroundImage: NetworkImage(imgUrl),  // 경로 확인 필요
+            ),
+
+          ),
+
+          SizedBox(height: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                radius: 40,
-                backgroundImage:
-                    AssetImage('assets/images/patient_photo.png'),
-              ),
-              SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('이름: 김환자 / 남, 45세', style: TextStyle(fontSize: 24)),
-                  Text('입원일: 2024년 8월 2일', style: TextStyle(fontSize: 24)),
-                  Text('병실 번호: 502호(4인실)', style: TextStyle(fontSize: 24)),
-                  Text('담당 의사: 김철수', style: TextStyle(fontSize: 24)),
-                ],
-              ),
+              Text('◦ 이름: $name / $gender, ${age}세', style: TextStyle(fontSize: 24)),
+              SizedBox(height: 16),
+              Text('◦ 입원일: $admissionDate', style: TextStyle(fontSize: 24)),
+              SizedBox(height: 16),
+              Text('◦ 병실 번호: $roomNumber호($roomInfo)', style: TextStyle(fontSize: 24)),
+              SizedBox(height: 16),
+              Text('◦ 담당 의사: $doctor', style: TextStyle(fontSize: 24)),
+              SizedBox(height: 16),
+              Text('◦ 질환: $diag', style: TextStyle(fontSize: 24)),
             ],
           ),
           SizedBox(height: 16),
@@ -97,7 +121,8 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-
+          SizedBox(height: 16),
+          Text('◦ 특이사항 없음', style: TextStyle(fontSize: 24)),
         ],
       ),
     );
@@ -121,111 +146,4 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
       ),
     );
   }
-
-  Widget _buildVitalSignsGraph() {
-    return Container(
-      height: 300,
-      padding: EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 8,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '활력 징후',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildVitalSignButton('혈압'),
-              _buildVitalSignButton('맥박'),
-              _buildVitalSignButton('호흡'),
-              _buildVitalSignButton('체온'),
-            ],
-          ),
-          SizedBox(height: 10),
-          Expanded(
-            child: SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
-              series: <LineSeries<ChartData, String>>[
-                LineSeries<ChartData, String>(
-                  dataSource: _getVitalSignData(selectedVitalSign),
-                  xValueMapper: (ChartData data, _) => data.time,
-                  yValueMapper: (ChartData data, _) => data.value,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildVitalSignButton(String vitalSign) {
-    return ElevatedButton(
-      onPressed: () {
-        setState(() {
-          selectedVitalSign = vitalSign;
-        });
-      },
-      child: Text(vitalSign),
-      style: ElevatedButton.styleFrom(
-        backgroundColor:
-            selectedVitalSign == vitalSign ? Colors.blue : Colors.grey,
-        foregroundColor: Colors.white,
-        textStyle: TextStyle(fontSize: 18),
-      ),
-    );
-  }
-
-  List<ChartData> _getVitalSignData(String vitalSign) {
-    switch (vitalSign) {
-      case '혈압':
-        return [
-          ChartData('10:00', 120),
-          ChartData('12:00', 125),
-          ChartData('14:00', 130),
-          ChartData('16:00', 128),
-        ];
-      case '맥박':
-        return [
-          ChartData('10:00', 70),
-          ChartData('12:00', 75),
-          ChartData('14:00', 72),
-          ChartData('16:00', 68),
-        ];
-      case '호흡':
-        return [
-          ChartData('10:00', 16),
-          ChartData('12:00', 18),
-          ChartData('14:00', 17),
-          ChartData('16:00', 19),
-        ];
-      case '체온':
-        return [
-          ChartData('10:00', 36.5),
-          ChartData('12:00', 36.7),
-          ChartData('14:00', 36.6),
-          ChartData('16:00', 36.8),
-        ];
-      default:
-        return [];
-    }
-  }
-
 }

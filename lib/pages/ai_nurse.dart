@@ -41,7 +41,7 @@ class AINursePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  '환자안심케어 요양병원 AI',
+                  '효도AI',
                   style: TextStyle(
                     fontSize: fontSizeSubtitle,
                     fontWeight: FontWeight.bold,
