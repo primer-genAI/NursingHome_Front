@@ -56,7 +56,7 @@ class AINursePage extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ChatPage(nurse_idx: 2)),
+                      MaterialPageRoute(builder: (context) => ChatPage(nurseIdx: 2)),
                     );
                   },
                   child: _buildAIConsultantTile(
@@ -72,7 +72,7 @@ class AINursePage extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ChatPage(nurse_idx: 1)),
+                      MaterialPageRoute(builder: (context) => ChatPage(nurseIdx: 1)),
                     );
                   },
                   child: _buildAIConsultantTile(

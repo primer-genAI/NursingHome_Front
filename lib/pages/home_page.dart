@@ -143,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                 onChanged: (String? newValue) {
                   setState(() {
                     _selectedPatientName = newValue;
-                    GlobalState.patient_id = _selectedPatientName;
+                    GlobalState.patientId = _selectedPatientName;
 
                     // 환자명을 선택하면 해당하는 비밀번호를 비밀번호 필드에 자동 입력
                     passwordController.text = patientPasswords[newValue] ?? "";

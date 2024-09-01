@@ -148,9 +148,9 @@ class _ChatPageState extends State<ChatPage> {
     String titleText;
 
     // nurse_idx 값에 따라 제목 설정
-    if (widget.nurse_idx == 1) {
+    if (widget.nurseIdx == 1) {
       titleText = 'AI 상담사 친절이';
-    } else if (widget.nurse_idx == 2) {
+    } else if (widget.nurseIdx == 2) {
       titleText = 'AI 상담사 간단이';
     } else {
       titleText = 'AI 상담사'; // 기본 제목 (필요한 경우)
