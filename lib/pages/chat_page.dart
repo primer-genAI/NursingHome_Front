@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../global_state.dart';
 import 'dart:convert';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+
 
 class ChatPage extends StatefulWidget {
-  final int nurse_idx;
+  final int nurseIdx;
 
-  ChatPage({required this.nurse_idx});
+  const ChatPage({required this.nurseIdx});
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -17,6 +19,17 @@ class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
   bool _isLoading = false;
 
+  late stt.SpeechToText _speech; // Speech to Text instance
+  bool _isListening = false;
+  String _recognizedText = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _speech = stt.SpeechToText();
+  }
+
+
   Future<void> _sendMessage() async {
     if (_controller.text.isEmpty) return;
 
@@ -25,8 +38,8 @@ class _ChatPageState extends State<ChatPage> {
       _isLoading = true;
     });
 
-    // final url = Uri.parse('http://localhost:8000/process-query');
-    final url = Uri.parse('http://104.198.208.62:5001/n${widget.nurse_idx}');
+    // final url = Uri.parse('http://localhost:8000/n${widget.nurseIdx}');
+    final url = Uri.parse('http://104.198.208.62:5001/n${widget.nurseIdx}');
 
     final headers = {
       "accept": "application/json",
@@ -35,7 +48,7 @@ class _ChatPageState extends State<ChatPage> {
 
     final body = json.encode({
       "question": _controller.text,
-      "patient_id": GlobalState.patient_id,
+      "patient_id": GlobalState.patientId,
     });
 
     try {
@@ -63,6 +76,38 @@ class _ChatPageState extends State<ChatPage> {
 
     _controller.clear();
   }
+
+  void _listen() async {
+    if (!_isListening) {
+      bool available = await _speech.initialize(
+        onStatus: (val) {
+          setState(() {
+            _isListening = _speech.isListening;
+          });
+        },
+        onError: (val) {
+          setState(() {
+            _isListening = false;
+          });
+          print('onError: $val');
+        },
+      );
+      if (available) {
+        setState(() => _isListening = true);
+        _speech.listen(
+          onResult: (val) => setState(() {
+            _recognizedText = val.recognizedWords;
+            _controller.text = _recognizedText;
+          }),
+          localeId: "ko_KR", // Set the language to Korean
+        );
+      }
+    } else {
+      setState(() => _isListening = false);
+      _speech.stop();
+    }
+  }
+
 
   Widget _buildMessage(Map<String, String> message) {
     bool isHuman = message['role'] == "human";
@@ -117,9 +162,23 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           if (_isLoading)
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: CircularProgressIndicator(),
+            ),
+          if (_isListening) // Show real-time transcription
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: CircularProgressIndicator(),
+              child: Text(
+                _recognizedText.isEmpty
+                    ? 'Listening...'
+                    : 'Recognizing: $_recognizedText',
+                style: const TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: Colors.grey,
+                  fontSize: 16,
+                ),
+              ),
             ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -128,6 +187,7 @@ class _ChatPageState extends State<ChatPage> {
                 Expanded(
                   child: TextField(
                     controller: _controller,
+                    maxLines: 1, // Increase the height of the input field
                     decoration: InputDecoration(
                       hintText: '메시지 입력...',
                       border: OutlineInputBorder(
@@ -136,11 +196,27 @@ class _ChatPageState extends State<ChatPage> {
                       filled: true,
                       fillColor: Colors.white,
                     ),
+                    style: const TextStyle(
+                      fontSize: 25, // Increase font size
+                    ),
                     textInputAction: TextInputAction.send,
                     onSubmitted: (_) => _sendMessage(),
                   ),
                 ),
                 SizedBox(width: 8),
+                // Enlarged Mic Icon
+                SizedBox(
+                  width: 60,  // Set width and height for the microphone icon
+                  height: 60,
+                  child: IconButton(
+                    iconSize: 40,  // Increase icon size
+                    icon: Icon(
+                      _isListening ? Icons.mic : Icons.mic_none,
+                      color: _isListening ? Colors.red : Colors.blueAccent,
+                    ),
+                    onPressed: _listen,
+                  ),
+                ),
                 IconButton(
                   icon: Icon(Icons.send, color: Colors.blueAccent),
                   onPressed: _sendMessage,
