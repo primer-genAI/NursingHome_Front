@@ -40,18 +40,10 @@ class AINursePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  '효도AI',
-                  style: TextStyle(
-                    fontSize: fontSizeSubtitle,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[600],
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+
                 SizedBox(height: screenHeight * 0.02),
                 Text(
-                  '효도AI',
+                  'AI 상담사 선택하기',
                   style: TextStyle(
                     fontSize: fontSizeTitle,
                     fontWeight: FontWeight.bold,
