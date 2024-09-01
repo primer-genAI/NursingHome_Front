@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import 'main_layout.dart';
+import 'pages/home_page.dart';
+import 'global_state.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,11 +11,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '효도AI',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      home: HomePage(
+        onLogin: (userInfo) {
+          GlobalState.userInfo = userInfo;
+          GlobalState.isLoggedIn = true;
+          runApp(MyAppWithLayout());
+        },
       ),
-      home: HomePage(),
+    );
+  }
+}
+
+class MyAppWithLayout extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MainLayout(),
     );
   }
 }
