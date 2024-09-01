@@ -4,6 +4,10 @@ import '../global_state.dart';
 import 'dart:convert';
 
 class ChatPage extends StatefulWidget {
+  final int nurse_idx;
+
+  ChatPage({required this.nurse_idx});
+
   @override
   _ChatPageState createState() => _ChatPageState();
 }
@@ -22,7 +26,7 @@ class _ChatPageState extends State<ChatPage> {
     });
 
     // final url = Uri.parse('http://localhost:8000/process-query');
-    final url = Uri.parse('http://104.198.208.62:5001/n1');
+    final url = Uri.parse('http://104.198.208.62:5001/n${widget.nurse_idx}');
 
     final headers = {
       "accept": "application/json",
