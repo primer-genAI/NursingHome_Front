@@ -31,7 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
   syncfusion_flutter_charts: ^20.4.43 # 그래프를 위한 패키지
-  #speech_to_text: ^7.0.0
+  syncfusion_flutter_gauges: ^20.4.43
+  speech_to_text: ^7.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
