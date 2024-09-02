@@ -63,10 +63,11 @@ class AINursePage extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.blueAccent.withOpacity(0.1), // 배경색 설정
                       borderRadius: BorderRadius.circular(16.0), // 모서리 둥글게 설정
-                      border: Border.all(
-                        color: Colors.blueAccent, // 테두리 색상 설정
-                        width: 0.0, // 테두리 두께 설정
-                      ),
+
+                      // border: Border.all(
+                      //   color: Colors.blueAccent, // 테두리 색상 설정
+                      //   width: 0.0, // 테두리 두께 설정
+                      // ),
                     ),
                     child: _buildAIConsultantTile(
                       'AI 상담사 간단이',
@@ -90,10 +91,10 @@ class AINursePage extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.redAccent.withOpacity(0.1), // 배경색 설정
                       borderRadius: BorderRadius.circular(16.0), // 모서리 둥글게 설정
-                      border: Border.all(
-                        color: Colors.greenAccent, // 테두리 색상 설정
-                        width: 0.0, // 테두리 두께 설정
-                      ),
+                      // border: Border.all(
+                      //   color: Colors.greenAccent, // 테두리 색상 설정
+                      //   width: 0.0, // 테두리 두께 설정
+                      // ),
                     ),
                     child: _buildAIConsultantTile(
                       'AI 상담사 친절이',
