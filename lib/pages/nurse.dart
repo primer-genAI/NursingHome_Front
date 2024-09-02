@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class NursePage extends StatefulWidget {
   @override
@@ -6,6 +7,20 @@ class NursePage extends StatefulWidget {
 }
 
 class _PatientSchedulePageState extends State<NursePage> {
+  final PageController _pageController = PageController();
+
+  final List<String> roomImages = [
+    'assets/images/room1.png',
+    'assets/images/room2.png',
+    'assets/images/room3.png',
+    'assets/images/room4.png',
+    'assets/images/room5.png',
+    'assets/images/room6.png',
+    'assets/images/room7.png',
+    'assets/images/room8.png',
+    'assets/images/room9.png',
+  ];
+
   final activities = {
     '00:00 - 00:30': {'patient': '취침', 'staff': '취침상태 관찰, 생활실 라운딩'},
     '00:30 - 01:00': {'patient': '취침', 'staff': '취침상태 관찰'},
@@ -295,11 +310,34 @@ class _PatientSchedulePageState extends State<NursePage> {
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 16),
-                    Image.asset(
-                      'assets/images/room.png', // 병실 사진 경로
+                    Container(
                       height: 400,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+                      child: PageView.builder(
+                        controller: _pageController,
+                        itemCount: roomImages.length,
+                        itemBuilder: (context, index) {
+                          return Image.asset(
+                            roomImages[index],
+                            height: 400,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Center(
+                      child: SmoothPageIndicator(
+                        controller: _pageController,
+                        count: roomImages.length,
+                        effect: WormEffect(
+                          dotWidth: 8.0,
+                          dotHeight: 8.0,
+                          spacing: 16.0,
+                          dotColor: Colors.grey,
+                          activeDotColor: Colors.blue,
+                        ),
+                      ),
                     ),
                   ],
                 ),

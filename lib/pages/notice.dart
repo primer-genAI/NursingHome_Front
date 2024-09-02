@@ -50,7 +50,7 @@ class _NoticePageState extends State<NoticePage> {
         children: [
           _buildServiceIcon(context, '의사', Icons.local_hospital, Colors.blue, 1, iconSize, fontSize),
           _buildServiceIcon(context, '간호사', Icons.healing, Colors.green, 5, iconSize, fontSize),
-          _buildServiceIcon(context, '공지사항', Icons.description, Colors.orange, 2, iconSize, fontSize),
+          _buildServiceIcon(context, '행정', Icons.description, Colors.orange, 2, iconSize, fontSize),
         ],
       ),
     );
@@ -69,7 +69,7 @@ class _NoticePageState extends State<NoticePage> {
             context,
             MaterialPageRoute(builder: (context) => NursePage()),
           );
-        } else if (label == '공지사항') {
+        } else if (label == '행정') {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => BoardPage()),
