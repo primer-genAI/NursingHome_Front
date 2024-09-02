@@ -7,52 +7,52 @@ class NursePage extends StatefulWidget {
 
 class _PatientSchedulePageState extends State<NursePage> {
   final activities = {
-    '00:00-00:30': {'patient': '취침', 'staff': '취침상태 관찰, 생활실 라운딩'},
-    '00:30-01:00': {'patient': '취침', 'staff': '취침상태 관찰'},
-    '01:00-01:30': {'patient': '취침', 'staff': '취침상태 관찰'},
-    '01:30-02:00': {'patient': '취침', 'staff': '취침상태 관찰'},
-    '02:00-02:30': {'patient': '취침', 'staff': '취침상태 관찰'},
-    '02:30-03:00': {'patient': '취침', 'staff': '취침상태 관찰'},
-    '03:00-03:30': {'patient': '취침', 'staff': '취침상태 관찰'},
-    '03:30-04:00': {'patient': '취침', 'staff': '취침상태 관찰'},
-    '04:00-04:30': {'patient': '취침', 'staff': '세탁물 정리, 기저귀 케어'},
-    '04:30-05:00': {'patient': '취침', 'staff': '세탁물 정리, 기저귀 케어'},
-    '05:00-05:30': {'patient': '기상', 'staff': '기저귀케어, 체위변경, 위생관리'},
-    '05:30-06:00': {'patient': '준비운동', 'staff': '준비운동 도와주기'},
-    '06:00-06:30': {'patient': '아침식사 준비', 'staff': '아침식사 준비'},
-    '06:30-07:00': {'patient': '아침식사', 'staff': '아침식사 도움'},
-    '07:00-07:30': {'patient': '식후 정리', 'staff': '식후 정리 및 위생관리'},
-    '07:30-08:00': {'patient': '휴식', 'staff': '청소 및 정리'},
-    '08:00-08:30': {'patient': '자유시간', 'staff': '간호 기록 정리'},
-    '08:30-09:00': {'patient': '활동 참여', 'staff': '활동 지원'},
-    '09:00-09:30': {'patient': '아침 체조', 'staff': '아침 체조 지원'},
-    '09:30-10:00': {'patient': '휴식', 'staff': '청소 및 건강 체크'},
-    '10:00-10:30': {'patient': '물리치료', 'staff': '물리치료 지원'},
-    '10:30-11:00': {'patient': '자유시간', 'staff': '기록 및 정리'},
-    '11:00-11:30': {'patient': '오전 간식', 'staff': '오전 간식 준비 및 제공'},
-    '11:30-12:00': {'patient': '점심 준비', 'staff': '점심 준비'},
-    '12:00-12:30': {'patient': '점심식사', 'staff': '점심식사 도움'},
-    '12:30-13:00': {'patient': '식후 휴식', 'staff': '식후 정리 및 휴식 지원'},
-    '13:00-13:30': {'patient': '개인활동', 'staff': '개인활동 지원'},
-    '13:30-14:00': {'patient': '휴식', 'staff': '휴식 지원 및 청소'},
-    '14:00-14:30': {'patient': '오후 활동 준비', 'staff': '활동 준비'},
-    '14:30-15:00': {'patient': '오후 활동', 'staff': '오후 활동 지원'},
-    '15:00-15:30': {'patient': '휴식', 'staff': '간호 기록 정리'},
-    '15:30-16:00': {'patient': '오후 간식', 'staff': '오후 간식 준비 및 제공'},
-    '16:00-16:30': {'patient': '자유시간', 'staff': '정리 및 휴식 지원'},
-    '16:30-17:00': {'patient': '저녁식사 준비', 'staff': '저녁식사 준비'},
-    '17:00-18:00': {'patient': '저녁식사', 'staff': '저녁식사 도움'},
-    '18:00-19:00': {'patient': '휴식', 'staff': '휴식 지원 및 개인위생 관리'},
-    '19:00-19:30': {'patient': '개인활동 및 취침 준비', 'staff': '취침 준비 지원'},
-    '19:30-20:00': {'patient': '휴식', 'staff': '기록 및 정리'},
-    '20:00-20:30': {'patient': '휴식', 'staff': '기록 및 정리'},
-    '20:30-21:00': {'patient': '휴식', 'staff': '기록 및 정리'},
-    '21:00-21:30': {'patient': '취침', 'staff': '취침 지원'},
-    '21:30-22:00': {'patient': '취침', 'staff': '기록 및 정리'},
-    '22:00-22:30': {'patient': '취침', 'staff': '라운딩'},
-    '22:30-23:00': {'patient': '취침', 'staff': '라운딩'},
-    '23:00-23:30': {'patient': '취침', 'staff': '체위변경, 기저귀 교체'},
-    '23:30-00:00': {'patient': '취침', 'staff': '체위변경, 기저귀 교체'},
+    '00:00 - 00:30': {'patient': '취침', 'staff': '취침상태 관찰, 생활실 라운딩'},
+    '00:30 - 01:00': {'patient': '취침', 'staff': '취침상태 관찰'},
+    '01:00 - 01:30': {'patient': '취침', 'staff': '취침상태 관찰'},
+    '01:30 - 02:00': {'patient': '취침', 'staff': '취침상태 관찰'},
+    '02:00 - 02:30': {'patient': '취침', 'staff': '취침상태 관찰'},
+    '02:30 - 03:00': {'patient': '취침', 'staff': '취침상태 관찰'},
+    '03:00 - 03:30': {'patient': '취침', 'staff': '취침상태 관찰'},
+    '03:30 - 04:00': {'patient': '취침', 'staff': '취침상태 관찰'},
+    '04:00 - 04:30': {'patient': '취침', 'staff': '세탁물 정리, 기저귀 케어'},
+    '04:30 - 05:00': {'patient': '취침', 'staff': '세탁물 정리, 기저귀 케어'},
+    '05:00 - 05:30': {'patient': '기상', 'staff': '기저귀케어, 체위변경, 위생관리'},
+    '05:30 - 06:00': {'patient': '준비운동', 'staff': '준비운동 도와주기'},
+    '06:00 - 06:30': {'patient': '아침식사 준비', 'staff': '아침식사 준비'},
+    '06:30 - 07:00': {'patient': '아침식사', 'staff': '아침식사 도움'},
+    '07:00 - 07:30': {'patient': '식후 정리', 'staff': '식후 정리 및 위생관리'},
+    '07:30 - 08:00': {'patient': '휴식', 'staff': '청소 및 정리'},
+    '08:00 - 08:30': {'patient': '자유시간', 'staff': '간호 기록 정리'},
+    '08:30 - 09:00': {'patient': '활동 참여', 'staff': '활동 지원'},
+    '09:00 - 09:30': {'patient': '아침 체조', 'staff': '아침 체조 지원'},
+    '09:30 - 10:00': {'patient': '휴식', 'staff': '청소 및 건강 체크'},
+    '10:00 - 10:30': {'patient': '물리치료', 'staff': '물리치료 지원'},
+    '10:30 - 11:00': {'patient': '자유시간', 'staff': '기록 및 정리'},
+    '11:00 - 11:30': {'patient': '오전 간식', 'staff': '오전 간식 준비 및 제공'},
+    '11:30 - 12:00': {'patient': '점심 준비', 'staff': '점심 준비'},
+    '12:00 - 12:30': {'patient': '점심식사', 'staff': '점심식사 도움'},
+    '12:30 - 13:00': {'patient': '식후 휴식', 'staff': '식후 정리 및 휴식 지원'},
+    '13:00 - 13:30': {'patient': '개인활동', 'staff': '개인활동 지원'},
+    '13:30 - 14:00': {'patient': '휴식', 'staff': '휴식 지원 및 청소'},
+    '14:00 - 14:30': {'patient': '오후 활동 준비', 'staff': '활동 준비'},
+    '14:30 - 15:00': {'patient': '오후 활동', 'staff': '오후 활동 지원'},
+    '15:00 - 15:30': {'patient': '휴식', 'staff': '간호 기록 정리'},
+    '15:30 - 16:00': {'patient': '오후 간식', 'staff': '오후 간식 준비 및 제공'},
+    '16:00 - 16:30': {'patient': '자유시간', 'staff': '정리 및 휴식 지원'},
+    '16:30 - 17:00': {'patient': '저녁식사 준비', 'staff': '저녁식사 준비'},
+    '17:00 - 18:00': {'patient': '저녁식사', 'staff': '저녁식사 도움'},
+    '18:00 - 19:00': {'patient': '휴식', 'staff': '휴식 지원 및 개인위생 관리'},
+    '19:00 - 19:30': {'patient': '개인활동 및 취침 준비', 'staff': '취침 준비 지원'},
+    '19:30 - 20:00': {'patient': '휴식', 'staff': '기록 및 정리'},
+    '20:00 - 20:30': {'patient': '휴식', 'staff': '기록 및 정리'},
+    '20:30 - 21:00': {'patient': '휴식', 'staff': '기록 및 정리'},
+    '21:00 - 21:30': {'patient': '취침', 'staff': '취침 지원'},
+    '21:30 - 22:00': {'patient': '취침', 'staff': '기록 및 정리'},
+    '22:00 - 22:30': {'patient': '취침', 'staff': '라운딩'},
+    '22:30 - 23:00': {'patient': '취침', 'staff': '라운딩'},
+    '23:00 - 23:30': {'patient': '취침', 'staff': '체위변경, 기저귀 교체'},
+    '23:30 - 00:00': {'patient': '취침', 'staff': '체위변경, 기저귀 교체'},
   };
 
 
@@ -94,13 +94,44 @@ class _PatientSchedulePageState extends State<NursePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('전체 환자와 의료진의 일과표'),
+          title: Text(
+            '전체 환자와 의료진의 일과표',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           content: Container(
             width: double.maxFinite,
             child: ListView(
               children: activities.entries.map((entry) {
-                return ListTile(
-                  title: Text('${entry.key}: 환자 - ${entry.value['patient']}, 의료진 - ${entry.value['staff']}'),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0), // 항목 간 간격 추가
+                  child: ListTile(
+                    title: Text(
+                      '${entry.key}',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '- 환자: ${entry.value['patient']}',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.blueAccent, // 환자 정보 색상 변경
+                          ),
+                        ),
+                        Text(
+                          '- 의료진: ${entry.value['staff']}',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.green, // 의료진 정보 색상 변경
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               }).toList(),
             ),
@@ -198,7 +229,7 @@ class _PatientSchedulePageState extends State<NursePage> {
       appBar: AppBar(
         title: Text('환자와 의료진의 현재 일과'),
         automaticallyImplyLeading: true, // 뒤로가기 버튼이 활성화되어야 함
-        backgroundColor: Colors.purple[200],
+        // backgroundColor: Colors.purple[200],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -230,6 +261,7 @@ class _PatientSchedulePageState extends State<NursePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text('상세한 일과표 보러가기    >', style: TextStyle(fontWeight: FontWeight.bold)),
                         Text('현재 시간: ${TimeOfDay.now().format(context)}'),
                         SizedBox(height: 8),
                         Text('환자: ${currentActivity['patient']}'),
@@ -302,7 +334,7 @@ class _PatientSchedulePageState extends State<NursePage> {
                               ),
                             ),
                           SizedBox(height: 16),
-                          Text('오늘 하루 식단 보러가기', textAlign: TextAlign.center, style: TextStyle(fontSize: 18)),
+                          Text('오늘 하루 식단 보러가기  > ', textAlign: TextAlign.center, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ),
