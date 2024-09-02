@@ -5,7 +5,7 @@ class HelpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('문의사항'),
+        title: Text('문의사항', style: TextStyle(fontSize: 28)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

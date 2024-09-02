@@ -15,7 +15,7 @@ class AINursePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('효도AI', style: TextStyle(fontSize: fontSizeTitle)),
+        title: Text('상담하기', style: TextStyle(fontSize: fontSizeTitle)),
         automaticallyImplyLeading: true,
       ),
       body: SingleChildScrollView(
@@ -55,7 +55,8 @@ class AINursePage extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ChatPage(nurseIdx: 2)),
+                      MaterialPageRoute(
+                          builder: (context) => ChatPage(nurseIdx: 2)),
                     );
                   },
                   child: Container(
@@ -83,7 +84,8 @@ class AINursePage extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ChatPage(nurseIdx: 1)),
+                      MaterialPageRoute(
+                          builder: (context) => ChatPage(nurseIdx: 1)),
                     );
                   },
                   child: Container(
@@ -113,7 +115,8 @@ class AINursePage extends StatelessWidget {
     );
   }
 
-  Widget _buildAIConsultantTile(String title, String imagePath, String subtitle, double iconSize, double fontSizeSubtitle) {
+  Widget _buildAIConsultantTile(String title, String imagePath, String subtitle,
+      double iconSize, double fontSizeSubtitle) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

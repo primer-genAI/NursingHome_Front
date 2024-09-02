@@ -219,6 +219,31 @@ class _PatientSchedulePageState extends State<NursePage> {
       },
     );
   }
+  Widget buildCardContainer({required Widget child}) {
+    // This function ensures consistent styling for all containers
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 3,
+              blurRadius: 5,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: child,
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     Map<String, String> currentActivity = getCurrentActivity();
@@ -228,8 +253,7 @@ class _PatientSchedulePageState extends State<NursePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('환자와 의료진의 현재 일과'),
-        automaticallyImplyLeading: true, // 뒤로가기 버튼이 활성화되어야 함
-        // backgroundColor: Colors.purple[200],
+        automaticallyImplyLeading: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -239,54 +263,21 @@ class _PatientSchedulePageState extends State<NursePage> {
             children: [
               GestureDetector(
                 onTap: () => _showScheduleDialog(context),
-                child: Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 3,
-                          blurRadius: 5,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('상세한 일과표 보러가기        >', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        Text('현재 시간: ${TimeOfDay.now().format(context)}', style: TextStyle(fontSize: 16)),
-                        SizedBox(height: 8),
-                        Text('환자: ${currentActivity['patient']}', style: TextStyle(fontSize: 16)),
-                        Text('의료진: ${currentActivity['staff']}', style: TextStyle(fontSize: 16)),
-                      ],
-                    ),
+                child: buildCardContainer(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('상세한 일과표 보러가기        >', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text('현재 시간: ${TimeOfDay.now().format(context)}', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 8),
+                      Text('환자: ${currentActivity['patient']}', style: TextStyle(fontSize: 16)),
+                      Text('의료진: ${currentActivity['staff']}', style: TextStyle(fontSize: 16)),
+                    ],
                   ),
                 ),
               ),
               SizedBox(height: 16),
-              // 병실 사진 추가 부분
-              Container(
-                padding: EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 3,
-                      blurRadius: 5,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
+              buildCardContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -308,40 +299,32 @@ class _PatientSchedulePageState extends State<NursePage> {
               if (mealDetails != null) ...[
                 GestureDetector(
                   onTap: () => _showMealDialog(context),
-                  child: Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('$currentMeal 식단', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          Text('칼로리: ${mealDetails['calories']} kcal', style: TextStyle(fontSize: 16)),
-                          SizedBox(height: 16),
-                          Text('메뉴: ${mealDetails['menu']}', style: TextStyle(fontSize: 16)),
-                          SizedBox(height: 8),
-                          if (mealDetails['image'] != null)
-                            GestureDetector(
-                              onTap: () => _showImageDialog(context, mealDetails['image'] as String),
-                              child: Image.asset(
-                                mealDetails['image'] as String,
-                                height: 400,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
+                  child: buildCardContainer(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('$currentMeal 식단', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text('칼로리: ${mealDetails['calories']} kcal', style: TextStyle(fontSize: 16)),
+                        SizedBox(height: 16),
+                        Text('메뉴: ${mealDetails['menu']}', style: TextStyle(fontSize: 16)),
+                        SizedBox(height: 8),
+                        if (mealDetails['image'] != null)
+                          GestureDetector(
+                            onTap: () => _showImageDialog(context, mealDetails['image'] as String),
+                            child: Image.asset(
+                              mealDetails['image'] as String,
+                              height: 400,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
                             ),
-                          SizedBox(height: 16),
-                          Text('오늘 하루 식단 보러가기  > ', textAlign: TextAlign.center, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        ],
-                      ),
+                          ),
+                        SizedBox(height: 16),
+                        Text('오늘 하루 식단 보러가기  > ', textAlign: TextAlign.center, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      ],
                     ),
                   ),
                 )
               ],
-
             ],
           ),
         ),
@@ -349,7 +332,6 @@ class _PatientSchedulePageState extends State<NursePage> {
     );
   }
 }
-
 
 void main() {
   runApp(MaterialApp(

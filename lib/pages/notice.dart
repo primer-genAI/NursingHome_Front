@@ -9,15 +9,17 @@ class NoticePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // 화면 크기에 따른 아이콘 크기와 컨테이너 크기 설정
     double iconSize = MediaQuery.of(context).size.width * 0.15;
-    double containerHeight = MediaQuery.of(context).size.height * 0.2; // 컨테이너 높이
+    double containerHeight =
+        MediaQuery.of(context).size.height * 0.2; // 컨테이너 높이
     double containerWidth = MediaQuery.of(context).size.width * 0.8; // 컨테이너 너비
     double fontSize = MediaQuery.of(context).size.width * 0.05; // 폰트 크기 동적 설정
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('공지 사항', style: TextStyle(fontSize: 28)),
+        title: Text('공지사항', style: TextStyle(fontSize: 28)),
       ),
-      body: SingleChildScrollView( // 스크롤 가능하도록 수정
+      body: SingleChildScrollView(
+        // 스크롤 가능하도록 수정
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -34,21 +36,26 @@ class NoticePage extends StatelessWidget {
     );
   }
 
-  Widget _buildServiceIconsSection(BuildContext context, double iconSize, double fontSize) {
+  Widget _buildServiceIconsSection(
+      BuildContext context, double iconSize, double fontSize) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildServiceIcon(context, '의사', Icons.local_hospital, Colors.blue, 1, iconSize, fontSize),
-          _buildServiceIcon(context, '간호사', Icons.healing, Colors.green, 5, iconSize, fontSize),
-          _buildServiceIcon(context, '공지사항', Icons.description, Colors.orange, 2, iconSize, fontSize),
+          _buildServiceIcon(context, '의사', Icons.local_hospital, Colors.blue, 1,
+              iconSize, fontSize),
+          _buildServiceIcon(context, '간호사', Icons.healing, Colors.green, 5,
+              iconSize, fontSize),
+          _buildServiceIcon(context, '행사', Icons.description, Colors.orange, 2,
+              iconSize, fontSize),
         ],
       ),
     );
   }
 
-  Widget _buildServiceIcon(BuildContext context, String label, IconData icon, Color color, int notificationCount, double iconSize, double fontSize) {
+  Widget _buildServiceIcon(BuildContext context, String label, IconData icon,
+      Color color, int notificationCount, double iconSize, double fontSize) {
     return GestureDetector(
       onTap: () {
         if (label == '의사') {
@@ -61,7 +68,7 @@ class NoticePage extends StatelessWidget {
             context,
             MaterialPageRoute(builder: (context) => NursePage()),
           );
-        } else if (label == '공지사항') {
+        } else if (label == '행사') {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => BoardPage()),
@@ -102,7 +109,8 @@ class NoticePage extends StatelessWidget {
                         notificationCount.toString(),
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: iconSize * 0.2, // Dynamic font size relative to the icon size
+                          fontSize: iconSize *
+                              0.2, // Dynamic font size relative to the icon size
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -138,7 +146,8 @@ class NoticePage extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ReportPage()), // 보고서 페이지로 이동
+            MaterialPageRoute(
+                builder: (context) => ReportPage()), // 보고서 페이지로 이동
           );
         },
         style: ElevatedButton.styleFrom(
@@ -196,37 +205,33 @@ class NoticePage extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextSpan(text: '이성식 (55세 / 남자)\n'),
-
             TextSpan(
               text: '◦ 입원일: ',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextSpan(text: '2023년 8월 20일\n'),
-
             TextSpan(
               text: '◦ 병실번호: ',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextSpan(text: '503호\n'),
-
             TextSpan(
               text: '◦ 담당의사: ',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextSpan(text: '김철수\n'),
-
             TextSpan(
               text: '◦ 기간: ',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextSpan(text: '2024년 7월\n\n'),
-
             TextSpan(
               text: '◦ 상태요약: ',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextSpan(
-              text: '현재 아버님 상태는 입원 당시 전립선 비대증과 전립선암, 뇌경색, 고혈압, 강직성 편마비, 인지기능 저하, 보행 장애가 있으셨는데요. '
+              text:
+                  '현재 아버님 상태는 입원 당시 전립선 비대증과 전립선암, 뇌경색, 고혈압, 강직성 편마비, 인지기능 저하, 보행 장애가 있으셨는데요. '
                   '지금 현재는 식사 잘하시고, 병원에서 해드릴 수 있는 보존적 치료를 하고 계십니다. 보존적 치료를 하면서 증상에 맞춰서 치료를 진행하고 있는데, '
                   '약물 치료, 재활 치료, 지능력 향상 치료를 진행하고 있습니다. 현재 혈압이나 맥박, 체온은 다 정상이시고, 다른 이상 증상은 없으십니다. '
                   '지금 현재 의료진의 재활 치료와 약물 치료를 잘 받고 계십니다.\n',
@@ -234,7 +239,6 @@ class NoticePage extends StatelessWidget {
           ],
         ),
       ),
-
 
       // child: Text(
       //   '이름: 이성식 (55세 / 남자)\n'

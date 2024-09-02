@@ -49,8 +49,7 @@ class _HomePageState extends State<HomePage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:56369/login'),
-        // Uri.parse('http://104.198.208.62:5001/login'),
+        Uri.parse('http://104.198.208.62:5001/login'),
         headers: {
           'Content-Type': 'application/json',
           'accept': 'application/json'
