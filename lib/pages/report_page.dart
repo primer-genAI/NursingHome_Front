@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'chart_data.dart';
+import '../global_state.dart';
 
 class ReportPage extends StatefulWidget {
   @override
@@ -12,6 +13,9 @@ class _ReportPageState extends State<ReportPage> {
 
   @override
   Widget build(BuildContext context) {
+    // GlobalState에서 사용자 정보 가져오기
+    final userInfo = GlobalState.userInfo ?? {};
+
     return Scaffold(
       appBar: AppBar(
         title: Text('월간 환자 상태 보고서', style: TextStyle(fontSize: 30)), // Increased font size
@@ -30,31 +34,33 @@ class _ReportPageState extends State<ReportPage> {
                       text: '◦ 이름: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(text: '이성식 (55세 / 남자)\n'),
+                    TextSpan(
+                        text:
+                        '${userInfo['이름']} (${userInfo['나이']}세 / ${userInfo['성별']})\n'),
 
                     TextSpan(
                       text: '◦ 입원일: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(text: '2023년 8월 20일\n'),
+                    TextSpan(text: '${userInfo['입원일']}\n'),
 
                     TextSpan(
                       text: '◦ 병실번호: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(text: '503호\n'),
+                    TextSpan(text: '${userInfo['병실번호']}\n'),
 
                     TextSpan(
                       text: '◦ 담당의사: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(text: '김철수\n'),
+                    TextSpan(text: '${userInfo['담당의사']}\n'),
 
                     TextSpan(
                       text: '◦ 기간: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(text: '2024년 7월\n'),
+                    TextSpan(text: '2024-06-30\n'), // 날짜 고려 ?
                   ],
                 ),
               ),
@@ -228,7 +234,6 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget _buildHospitalInfo() {
-    // Placeholder for Hospital Information
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(16),
@@ -279,10 +284,6 @@ class _ReportPageState extends State<ReportPage> {
               ],
             ),
           ),
-          // Text(
-          //   '병원 연락처 : 02-2347-1206\n병원 이메일: contact@nursinghospital.com\n병원 홈페이지: http://www.nursinghospital.com',
-          //   style: TextStyle(fontSize: 20, height: 1.5), // Adjusted font size and line height
-          // ),
         ],
       ),
     );
