@@ -188,7 +188,6 @@ class _PatientSchedulePageState extends State<NursePage> {
       },
     );
   }
-
   @override
   Widget build(BuildContext context) {
     Map<String, String> currentActivity = getCurrentActivity();
@@ -200,48 +199,14 @@ class _PatientSchedulePageState extends State<NursePage> {
         title: Text('환자와 의료진의 현재 일과'),
         backgroundColor: Colors.purple[200],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            GestureDetector(
-              onTap: () => _showScheduleDialog(context),
-              child: Card(
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Container(
-                  padding: EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 3,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('현재 시간: ${TimeOfDay.now().format(context)}'),
-                      SizedBox(height: 8),
-                      Text('환자: ${currentActivity['patient']}'),
-                      Text('의료진: ${currentActivity['staff']}'),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
-            if (mealDetails != null) ...[
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
               GestureDetector(
-                onTap: () => _showMealDialog(context),
+                onTap: () => _showScheduleDialog(context),
                 child: Card(
                   elevation: 5,
                   shape: RoundedRectangleBorder(
@@ -249,39 +214,110 @@ class _PatientSchedulePageState extends State<NursePage> {
                   ),
                   child: Container(
                     padding: EdgeInsets.all(16.0),
-                    height: 600,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 3,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('$currentMeal 식단', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        Text('칼로리: ${mealDetails['calories']} kcal'),
-                        SizedBox(height: 16),
-                        Text('메뉴: ${mealDetails['menu']}'),
+                        Text('현재 시간: ${TimeOfDay.now().format(context)}'),
                         SizedBox(height: 8),
-                        if (mealDetails['image'] != null)
-                          GestureDetector(
-                            onTap: ()=> _showImageDialog(context, mealDetails['image'] as String),
-                            child: Image.asset(
-                              mealDetails['image'] as String,
-                              height: 400,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        SizedBox(height: 16),
-                        Text('오늘 하루 식단 보러가기', textAlign: TextAlign.center, style: TextStyle(fontSize: 18)),
+                        Text('환자: ${currentActivity['patient']}'),
+                        Text('의료진: ${currentActivity['staff']}'),
                       ],
                     ),
                   ),
                 ),
-              )
-            ]
-          ],
+              ),
+              SizedBox(height: 16),
+              // 병실 사진 추가 부분
+              Container(
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 3,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '환자 생활 사진',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 16),
+                    Image.asset(
+                      'assets/images/room.png', // 병실 사진 경로
+                      height: 400,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 16),
+              if (mealDetails != null) ...[
+                GestureDetector(
+                  onTap: () => _showMealDialog(context),
+                  child: Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('$currentMeal 식단', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          Text('칼로리: ${mealDetails['calories']} kcal'),
+                          SizedBox(height: 16),
+                          Text('메뉴: ${mealDetails['menu']}'),
+                          SizedBox(height: 8),
+                          if (mealDetails['image'] != null)
+                            GestureDetector(
+                              onTap: () => _showImageDialog(context, mealDetails['image'] as String),
+                              child: Image.asset(
+                                mealDetails['image'] as String,
+                                height: 400,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          SizedBox(height: 16),
+                          Text('오늘 하루 식단 보러가기', textAlign: TextAlign.center, style: TextStyle(fontSize: 18)),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+
 void main() {
   runApp(MaterialApp(
     home: NursePage(),
