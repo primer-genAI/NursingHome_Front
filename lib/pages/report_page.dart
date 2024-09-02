@@ -156,43 +156,43 @@ class _ReportPageState extends State<ReportPage> {
     switch (vitalSign) {
       case '혈압':
         return [
-          ChartData('7월 1일', 120),
-          ChartData('7월 5일', 125),
-          ChartData('7월 10일', 130),
-          ChartData('7월 15일', 128),
-          ChartData('7월 20일', 122),
-          ChartData('7월 25일', 118),
-          ChartData('7월 30일', 126),
+          ChartData('7/1', 120),
+          ChartData('7/5', 125),
+          ChartData('7/10', 130),
+          ChartData('7/15', 128),
+          ChartData('7/20', 122),
+          ChartData('7/25', 118),
+          ChartData('7/30', 126),
         ];
       case '맥박':
         return [
-          ChartData('7월 1일', 70),
-          ChartData('7월 5일', 72),
-          ChartData('7월 10일', 68),
-          ChartData('7월 15일', 75),
-          ChartData('7월 20일', 70),
-          ChartData('7월 25일', 73),
-          ChartData('7월 30일', 69),
+          ChartData('7/1', 70),
+          ChartData('7/5', 72),
+          ChartData('7/10', 68),
+          ChartData('7/15', 75),
+          ChartData('7/20', 70),
+          ChartData('7/25', 73),
+          ChartData('7/30', 69),
         ];
       case '호흡':
         return [
-          ChartData('7월 1일', 16),
-          ChartData('7월 5일', 17),
-          ChartData('7월 10일', 15),
-          ChartData('7월 15일', 18),
-          ChartData('7월 20일', 16),
-          ChartData('7월 25일', 17),
-          ChartData('7월 30일', 16),
+          ChartData('7/1', 16),
+          ChartData('7/5', 17),
+          ChartData('7/10', 15),
+          ChartData('7/15', 18),
+          ChartData('7/20', 16),
+          ChartData('7/25', 17),
+          ChartData('7/30', 16),
         ];
       case '체온':
         return [
-          ChartData('7월 1일', 36.5),
-          ChartData('7월 5일', 36.6),
-          ChartData('7월 10일', 36.7),
-          ChartData('7월 15일', 36.5),
-          ChartData('7월 20일', 36.8),
-          ChartData('7월 25일', 36.6),
-          ChartData('7월 30일', 36.7),
+          ChartData('7/1', 36.5),
+          ChartData('7/5', 36.6),
+          ChartData('7/10', 36.7),
+          ChartData('7/15', 36.5),
+          ChartData('7/20', 36.8),
+          ChartData('7/25', 36.6),
+          ChartData('7/30', 36.7),
         ];
       default:
         return [];
