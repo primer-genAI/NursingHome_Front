@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
 import 'pages/ai_nurse.dart';
 import 'pages/notice.dart';
+import 'pages/help.dart';
 import 'pages/patient_info_page.dart';
 import 'widgets/custom_nav_bar.dart';
 import 'global_state.dart';
@@ -57,6 +58,7 @@ class _MainLayoutState extends State<MainLayout> {
                 ? PatientInfoPage(userInfo: GlobalState.userInfo ?? {})
                 : HomePage(onLogin: navigateToPatientInfoPage), // 로그인 상태에 따라 페이지 변경
             NoticePage(), // Notice Page
+            HelpPage(), // Notice Page
           ],
         ),
         bottomNavigationBar: GlobalState.isLoggedIn

@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   bool _isPasswordVisible = false;
 
   // 환자명 리스트
-  final List<String> patientNames = [
+  final List<String> patientIds = [
     "남A",
     "남B",
     "남C",
@@ -27,7 +27,17 @@ class _HomePageState extends State<HomePage> {
     "여C",
   ];
 
-  String? _selectedPatientName; // 선택된 환자명
+  // 환자 실명 리스트
+  final Map<String, String> realNames = {
+    "남A": "김영수",
+    "남B": "박정희",
+    "남C": "이순남",
+    "여A": "최말순",
+    "여B": "한정자",
+    "여C": "유복자",
+  };
+
+  String? _selectedPatientId; // 선택된 환자명
 
   // 비밀번호 맵 (환자명에 따른 비밀번호 매핑)
   final Map<String, String> patientPasswords = {
@@ -41,7 +51,7 @@ class _HomePageState extends State<HomePage> {
 
   // 로그인 API 호출 함수
   Future<void> _login() async {
-    if (_selectedPatientName == null) {
+    if (_selectedPatientId == null) {
       // 환자명을 선택하지 않은 경우 경고 메시지
       showDialog(
         context: context,
@@ -66,7 +76,7 @@ class _HomePageState extends State<HomePage> {
         Uri.parse('http://104.198.208.62:5001/login'),
         headers: {'Content-Type': 'application/json', 'accept':'application/json'},
         body: json.encode({
-          'patient_id': _selectedPatientName,
+          'patient_id': _selectedPatientId,
         }),
       );
 
@@ -128,22 +138,32 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 10),
+              // 부제목 추가
+              Text(
+                '환자안심케어 요양병원 AI', // 부제목 추가
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500,
+                  color: Colors.grey[600], // 옅은 회색으로 설정
+                ), // 적절한 스타일을 설정
+              ),
+              SizedBox(height: 10), // 부제목 아래에 여백 추가
               Text('실시간 요양병원 환자 정보 손쉽게 확인하세요', style: TextStyle(fontSize: 18)),
               SizedBox(height: 20),
               // DropdownButton을 사용하여 환자명을 선택
               DropdownButton<String>(
                 hint: Text('사용자명을 선택하세요'),
-                value: _selectedPatientName,
-                items: patientNames.map((String name) {
+                value: _selectedPatientId,
+
+                // 환자명 변경 코드 - "남A" -> 실명
+                items: patientIds.map((String id) {
                   return DropdownMenuItem<String>(
-                    value: name,
-                    child: Text(name),
+                    value: id,
+                    child: Text(realNames[id] ?? id),
                   );
                 }).toList(),
                 onChanged: (String? newValue) {
                   setState(() {
-                    _selectedPatientName = newValue;
-                    GlobalState.patient_id = _selectedPatientName;
+                    _selectedPatientId = newValue;
+                    GlobalState.patientId = _selectedPatientId;
 
                     // 환자명을 선택하면 해당하는 비밀번호를 비밀번호 필드에 자동 입력
                     passwordController.text = patientPasswords[newValue] ?? "";

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_nav_bar.dart';
 import '../global_state.dart';
 import 'ai_nurse.dart';
+import 'chat_page.dart';
 import 'notice.dart';
+import 'help.dart';
 
 class PatientInfoPage extends StatefulWidget {
   final Map<String, dynamic> userInfo;
@@ -25,20 +27,25 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 화면 크기 가져오기
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('메인 페이지', style: TextStyle(fontSize: 28)),
+        title: Text('홈', style: TextStyle(fontSize: screenWidth * 0.07)),
         automaticallyImplyLeading: true, // 뒤로가기 버튼 자동 추가
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildPatientInfoSection(),
-            ],
-          ),
+      body: SingleChildScrollView( // 스크롤 가능하도록 추가
+        padding: const EdgeInsets.all(5.0),
+        child: Column(
+          children: [
+            // 전체 상태 섹션
+            _buildPatientInfoSection(screenWidth, screenHeight),
+            SizedBox(height: 35),
+            // AI 상담사 선택하기 섹션
+            _buildAINurseSelectSection(context, screenWidth),
+          ],
         ),
       ),
       bottomNavigationBar: CustomNavBar(
@@ -64,14 +71,18 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
               context,
               MaterialPageRoute(builder: (context) => NoticePage()),
             );
+          } else {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HelpPage()),
+            );
           }
         },
       ),
     );
   }
 
-
-  Widget _buildPatientInfoSection() {
+  Widget _buildPatientInfoSection(double screenWidth, double screenHeight) {
     final String name = widget.userInfo['이름'] ?? '이름 없음';
     final String gender = widget.userInfo['성별'] ?? '성별 없음';
     final int age = widget.userInfo['나이'] ?? 0;
@@ -81,10 +92,12 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     final String doctor = widget.userInfo['담당의사'] ?? '담당의 없음';
     final String imgPath = widget.userInfo['image_path'] ?? 'No Image';
 
-    final String imgUrl = 'http://104.198.208.62/assets/$imgPath';
+    final String imgUrl = 'http://104.198.208.62/static/$imgPath';
 
     final List<dynamic> diagList = widget.userInfo['질환명'] ?? [];
-    final String diag = diagList.join(', '); // 리스트를 문자열로 변환
+    final String diag = diagList.join(', ');
+
+    double fontSize = screenWidth * 0.04;
 
     return Container(
       padding: EdgeInsets.all(20.0),
@@ -108,68 +121,205 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
               Text(
                 '전체 상태: ',
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: fontSize,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              _buildHealthStatusButton(),
+              _buildHealthStatusButton(fontSize),
             ],
           ),
-          SizedBox(height: 16),
-          Center(
-            child: CircleAvatar(
-              radius: 100,  // 적절한 크기로 변경
-              backgroundImage: NetworkImage(imgUrl),  // 경로 확인 필요
-            ),
-
-          ),
-
-          SizedBox(height: 20),
-          Column(
+          SizedBox(height: 5),
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('◦ 이름: $name / $gender, ${age}세', style: TextStyle(fontSize: 24)),
-              SizedBox(height: 16),
-              Text('◦ 입원일: $admissionDate', style: TextStyle(fontSize: 24)),
-              SizedBox(height: 16),
-              Text('◦ 병실 번호: $roomNumber호($roomInfo)', style: TextStyle(fontSize: 24)),
-              SizedBox(height: 16),
-              Text('◦ 담당 의사: $doctor', style: TextStyle(fontSize: 24)),
-              SizedBox(height: 16),
-              Text('◦ 질환: $diag', style: TextStyle(fontSize: 24)),
+              Column(
+                children: [
+                  CircleAvatar(
+                    radius: 60,
+                    backgroundImage: NetworkImage(imgUrl),
+                  ),
+                ],
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: screenHeight*0.005),
+                    Text('◦ 이름: $name / $gender, ${age}세', style: TextStyle(fontSize: fontSize)),
+                    SizedBox(height: screenHeight*0.005),
+                    Text('◦ 입원일: $admissionDate', style: TextStyle(fontSize: fontSize)),
+                    SizedBox(height: screenHeight*0.005),
+                    Text('◦ 병실 번호: $roomNumber호($roomInfo)', style: TextStyle(fontSize: fontSize)),
+                    SizedBox(height: screenHeight*0.005),
+                    Text('◦ 담당 의사: $doctor', style: TextStyle(fontSize: fontSize)),
+                  ],
+                ),
+              ),
             ],
           ),
-          SizedBox(height: 16),
+          SizedBox(height: screenHeight*0.005),
+          Text(
+            '◦ 질환: $diag',
+            style: TextStyle(fontSize: fontSize),
+          ),
+          SizedBox(height: screenHeight*0.005),
           Text(
             '오늘의 상태 요약:',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: fontSize,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 16),
-          Text('◦ 특이사항 없음', style: TextStyle(fontSize: 24)),
+          SizedBox(height: screenHeight*0.005),
+          Text('◦ 특이사항 없음', style: TextStyle(fontSize: fontSize)),
         ],
       ),
     );
   }
 
-  Widget _buildHealthStatusButton() {
+  Widget _buildHealthStatusButton(double fontSize) {
     return ElevatedButton(
       onPressed: () {
         setState(() {
           healthStatus = healthStatus == '양호' ? '위험' : '양호';
         });
       },
-      child: Text(healthStatus, style: TextStyle(fontSize: 22)),
+      child: Text(healthStatus, style: TextStyle(fontSize: fontSize)),
       style: ElevatedButton.styleFrom(
         backgroundColor: healthStatus == '양호' ? Colors.green : Colors.red,
         foregroundColor: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 0.1, vertical: 0.1),
         textStyle: TextStyle(
           fontWeight: FontWeight.bold,
         ),
       ),
+    );
+  }
+
+  Widget _buildAINurseSelectSection(BuildContext context, double screenWidth) {
+    double iconSize = screenWidth * 0.2;
+    double fontSizeTitle = screenWidth * 0.07;
+    double fontSizeSubtitle = screenWidth * 0.05;
+
+    return Container(
+      padding: EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 8,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child:
+        Column(
+          children: [
+            Text(
+              'AI 상담사 선택하기',
+              style: TextStyle(
+                fontSize: fontSizeTitle,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20, width: screenWidth),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 양쪽에 여백을 균등하게 분배
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChatPage(nurseIdx: 2)),
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(16.0), // 내부 패딩 추가
+                      decoration: BoxDecoration(
+                        color: Colors.blueAccent.withOpacity(0.1), // 배경색 설정
+                        borderRadius: BorderRadius.circular(16.0), // 모서리 둥글게 설정
+                        // border: Border.all(
+                        //   color: Colors.blueAccent, // 테두리 색상 설정
+                        //   width: 0.0, // 테두리 두께 설정
+                        // ),
+                      ),
+                      child: _buildAIConsultantTile(
+                        '간단이',
+                        'assets/images/nurse2.png',
+                        '전문적이고 요점만 간단히 환자분의 상황을 알려드립니다.',
+                        iconSize,
+                        fontSizeSubtitle,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: screenWidth * 0.05), // 타일 사이에 여백 추가
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChatPage(nurseIdx: 1)),
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(16.0), // 내부 패딩 추가
+                      decoration: BoxDecoration(
+                        color: Colors.redAccent.withOpacity(0.1), // 배경색 설정
+                        borderRadius: BorderRadius.circular(16.0), // 모서리 둥글게 설정
+                        // border: Border.all(
+                        //   color: Colors.greenAccent, // 테두리 색상 설정
+                        //   width: 0.0, // 테두리 두께 설정
+                        // ),
+                      ),
+                      child: _buildAIConsultantTile(
+                        '친절이',
+                        'assets/images/nurse1.png',
+                        '친절하고 자세하게 환자분의 상황을 설명해드리겠습니다.',
+                        iconSize,
+                        fontSizeSubtitle,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        )
+    );
+  }
+
+  Widget _buildAIConsultantTile(String title, String imagePath, String subtitle, double iconSize, double fontSizeSubtitle) {
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: iconSize,  // 적절한 크기로 변경
+          backgroundImage: AssetImage(imagePath),
+        ),
+        SizedBox(height: 8),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: fontSizeSubtitle,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 4),
+        Text(
+          subtitle,
+          style: TextStyle(fontSize: fontSizeSubtitle * 0.7),
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 }
