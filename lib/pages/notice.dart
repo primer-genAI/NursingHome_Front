@@ -125,21 +125,48 @@ class NoticePage extends StatelessWidget {
   }
 
   Widget _buildReportButton(BuildContext context, double fontSize) {
-    return ElevatedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ReportPage()), // 보고서 페이지로 이동
-        );
-      },
-      child: Text(
-        '월간 환자 상태 보고서',
-        style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.blue, Colors.purple], // 그라데이션 색상 지정
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(10), // 버튼 모서리 둥글게
       ),
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ReportPage()), // 보고서 페이지로 이동
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+          backgroundColor: Colors.transparent, // ElevatedButton의 배경을 투명하게 설정
+          shadowColor: Colors.transparent, // 그림자 색상도 투명하게 설정
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min, // Row가 버튼 크기만큼만 차지하도록 설정
+          children: [
+            Text(
+              '월간 환자 상태 보고서',
+              style: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: Colors.white, // 텍스트 색상을 흰색으로 설정
+              ),
+            ),
+            SizedBox(width: 10), // 텍스트와 아이콘 사이에 간격 추가
+            Icon(
+              Icons.arrow_forward_ios, // > 아이콘 사용
+              color: Colors.white, // 아이콘 색상을 흰색으로 설정
+              size: fontSize, // 아이콘 크기를 텍스트와 동일하게 설정
+            ),
+          ],
         ),
       ),
     );

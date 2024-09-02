@@ -79,6 +79,11 @@ class _EventListPageState extends State<EventListPage> {
                 color: Colors.grey[600],
               ),
             ),
+            trailing: Icon(
+              Icons.arrow_forward_ios, // > 아이콘 사용
+              color: Colors.grey[600], // 아이콘 색상을 날짜와 동일하게 설정
+              size: 20, // 아이콘 크기 설정
+            ),
             onTap: () {
               showDialog(
                 context: context,
