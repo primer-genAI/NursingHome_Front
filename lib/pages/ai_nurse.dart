@@ -18,7 +18,7 @@ class AINursePage extends StatelessWidget {
         title: Text('효도AI', style: TextStyle(fontSize: fontSizeTitle)),
         automaticallyImplyLeading: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(containerPadding),
         child: Center(
           child: Container(

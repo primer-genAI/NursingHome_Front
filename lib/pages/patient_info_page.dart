@@ -36,40 +36,15 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
         title: Text('홈', style: TextStyle(fontSize: screenWidth * 0.07)),
         automaticallyImplyLeading: true, // 뒤로가기 버튼 자동 추가
       ),
-      body: Padding(
+      body: SingleChildScrollView( // 스크롤 가능하도록 추가
         padding: const EdgeInsets.all(5.0),
         child: Column(
           children: [
             // 전체 상태 섹션
-            Flexible(
-              flex: 5,
-              child: Container(
-                child: _buildPatientInfoSection(screenWidth, screenHeight),
-              ),
-            ),
+            _buildPatientInfoSection(screenWidth, screenHeight),
             SizedBox(height: 15),
             // AI 상담사 선택하기 섹션
-            Flexible(
-              flex: 6,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 8,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: _buildAINurseSelectSection(context, screenWidth),
-                ),
-              ),
-            ),
+            _buildAINurseSelectSection(context, screenWidth),
           ],
         ),
       ),
@@ -98,8 +73,8 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
             );
           } else {
             Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => HelpPage()),
+              context,
+              MaterialPageRoute(builder: (context) => HelpPage()),
             );
           }
         },
