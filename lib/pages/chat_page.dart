@@ -25,6 +25,8 @@ class _ChatPageState extends State<ChatPage> {
   late stt.SpeechToText _speech; // Speech to Text instance
   late FlutterTts _tts; // TTS 인스턴스 추가
   bool _isListening = false;
+  bool _isSpeaking = false; // TTS 진행 여부를 나타내는 변수 추가
+
   String _recognizedText = '';
   Timer? _stopListeningTimer; // 타이머 추가
   final int _noInputTimeout = 2; // 2초 동안 입력이 없으면 중지
@@ -35,6 +37,25 @@ class _ChatPageState extends State<ChatPage> {
     requestMicrophonePermission();
     _speech = stt.SpeechToText();
     _tts = FlutterTts(); // TTS 인스턴스 초기화
+
+    // TTS 진행 상태에 따라 _isSpeaking 값을 변경
+    _tts.setStartHandler(() {
+      setState(() {
+        _isSpeaking = true;
+      });
+    });
+
+    _tts.setCompletionHandler(() {
+      setState(() {
+        _isSpeaking = false;
+      });
+    });
+
+    _tts.setCancelHandler(() {
+      setState(() {
+        _isSpeaking = false;
+      });
+    });
   }
 
   Future<void> requestMicrophonePermission() async {
@@ -98,6 +119,11 @@ class _ChatPageState extends State<ChatPage> {
     _controller.clear();
   }
   void _listen() async {
+    if (_isSpeaking) {
+      _stopSpeaking(); // TTS가 진행 중이면 TTS 중단
+      return;
+    }
+
     if (!_isListening) {
       bool available = await _speech.initialize(
         onStatus: (val) {
@@ -151,6 +177,14 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  void _stopSpeaking() async {
+    if (_isSpeaking) {
+      await _tts.stop();
+      setState(() {
+        _isSpeaking = false;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -238,7 +272,7 @@ class _ChatPageState extends State<ChatPage> {
               ),
               child: Text(
                 randomSuggestions[index],
-                style: TextStyle(fontSize: 14, color: Colors.white), // 글자색을 흰색으로 설정
+                style: TextStyle(fontSize: 16, color: Colors.white), // 글자색을 흰색으로 설정
               ),
             ),
           );
@@ -322,17 +356,27 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                 ),
                 SizedBox(width: 8),
-                // Enlarged Mic Icon
+                // Enlarged Mic Icon with Conditional TTS Stop Functionality
                 SizedBox(
                   width: 60,  // Set width and height for the microphone icon
                   height: 60,
                   child: IconButton(
                     iconSize: 40,  // Increase icon size
                     icon: Icon(
-                      _isListening ? Icons.mic : Icons.mic_none,
-                      color: _isListening ? Colors.red : Colors.blueAccent,
+                      _isSpeaking
+                          ? Icons.stop // TTS가 진행 중이면 정지 아이콘 표시
+                          : _isListening
+                          ? Icons.mic
+                          : Icons.mic_none,
+                      color: _isSpeaking
+                          ? Colors.red // 정지 버튼은 빨간색
+                          : _isListening
+                          ? Colors.red
+                          : Colors.blueAccent,
                     ),
-                    onPressed: _listen,
+                    onPressed: _isSpeaking
+                        ? _stopSpeaking // TTS가 진행 중이면 TTS 정지
+                        : _listen, // 그렇지 않으면 음성 인식 시작/중지
                   ),
                 ),
                 IconButton(
@@ -346,5 +390,31 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
-
 }
+//                 SizedBox(width: 8),
+//                 // Enlarged Mic Icon
+//                 SizedBox(
+//                   width: 60,  // Set width and height for the microphone icon
+//                   height: 60,
+//                   child: IconButton(
+//                     iconSize: 40,  // Increase icon size
+//                     icon: Icon(
+//                       _isListening ? Icons.mic : Icons.mic_none,
+//                       color: _isListening ? Colors.red : Colors.blueAccent,
+//                     ),
+//                     onPressed: _listen,
+//                   ),
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.send, color: Colors.blueAccent),
+//                   onPressed: _sendMessage,
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+//
+// }
