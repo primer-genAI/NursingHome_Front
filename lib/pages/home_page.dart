@@ -82,6 +82,7 @@ class _HomePageState extends State<HomePage> {
 
       if (response.statusCode == 200) {
         final userInfo = json.decode(response.body);
+        GlobalState.userInfo = userInfo;
 
         // 로그인 성공 시, 사용자 정보를 다음 화면으로 전달
         Navigator.push(

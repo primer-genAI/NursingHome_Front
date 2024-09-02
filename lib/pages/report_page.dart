@@ -14,7 +14,19 @@ class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
     // GlobalState에서 사용자 정보 가져오기
-    final userInfo = GlobalState.userInfo ?? {};
+    final userInfo = GlobalState.userInfo;
+
+    if (userInfo == null) {
+      // userInfo가 null인 경우에 대한 처리
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('월간 환자 상태 보고서'),
+        ),
+        body: Center(
+          child: Text('사용자 정보를 불러올 수 없습니다.'),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -96,7 +108,7 @@ class _ReportPageState extends State<ReportPage> {
         crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
         children: [
           Text(
-            '◦ 상태 요약',
+            '상태 요약',
             style: TextStyle(
               fontSize: 26, // Increased font size
               fontWeight: FontWeight.bold,
