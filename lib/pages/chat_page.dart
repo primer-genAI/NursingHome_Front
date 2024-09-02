@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:math'; // 무작위 선택을 위해 추가
 import 'dart:async'; // 타이머를 위해 추가
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:flutter_tts/flutter_tts.dart'; // TTS 패키지 추가
 
 class ChatPage extends StatefulWidget {
   final int nurseIdx;
@@ -21,15 +22,17 @@ class _ChatPageState extends State<ChatPage> {
   bool _isLoading = false;
 
   late stt.SpeechToText _speech; // Speech to Text instance
+  late FlutterTts _tts; // TTS 인스턴스 추가
   bool _isListening = false;
   String _recognizedText = '';
   Timer? _stopListeningTimer; // 타이머 추가
-  final int _noInputTimeout = 3; // 3초 동안 입력이 없으면 중지
+  final int _noInputTimeout = 2; // 2초 동안 입력이 없으면 중지
 
   @override
   void initState() {
     super.initState();
     _speech = stt.SpeechToText();
+    _tts = FlutterTts(); // TTS 인스턴스 초기화
   }
 
   Future<void> _sendMessage() async {
@@ -61,6 +64,7 @@ class _ChatPageState extends State<ChatPage> {
         setState(() {
           messages.add({"role": "bot", "content": responseBody['response']});
         });
+        await _tts.speak(responseBody['response']); // TTS로 입력된 텍스트 읽어줌
       } else {
         setState(() {
           messages.add({"role": "error", "content": "Error: ${response.statusCode}"});
@@ -119,7 +123,8 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _stopListening() {
+
+  void _stopListening() async {
     if (_isListening) {
       _speech.stop();
       setState(() {
@@ -131,12 +136,15 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+
   @override
   void dispose() {
     _stopListeningTimer?.cancel();
     _speech.stop();
+    _tts.stop(); // TTS 중지
     super.dispose();
   }
+
 
   Widget _buildMessage(Map<String, String> message) {
     bool isHuman = message['role'] == "human";
@@ -223,6 +231,7 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
+
 
 
   @override
@@ -322,4 +331,5 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
+
 }
