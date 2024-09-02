@@ -25,7 +25,7 @@ class NoticePage extends StatelessWidget {
           child: Column(
             children: [
               _buildServiceIconsSection(context, iconSize, fontSize),
-              SizedBox(height: 30), // 아이콘 섹션과 보고서 버튼 사이의 간격
+              SizedBox(height: 20), // 아이콘 섹션과 보고서 버튼 사이의 간격
               _buildReportButton(context, fontSize),
               SizedBox(height: 20), // 버튼과 요약문 사이의 간격
               _buildReportSummary(), // 요약문 표시
