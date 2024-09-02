@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import '../global_state.dart';
 import 'dart:convert';
 import 'dart:math'; // 무작위 선택을 위해 추가
+import 'dart:async'; // 타이머를 위해 추가
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class ChatPage extends StatefulWidget {
@@ -22,6 +23,8 @@ class _ChatPageState extends State<ChatPage> {
   late stt.SpeechToText _speech; // Speech to Text instance
   bool _isListening = false;
   String _recognizedText = '';
+  Timer? _stopListeningTimer; // 타이머 추가
+  final int _noInputTimeout = 3; // 3초 동안 입력이 없으면 중지
 
   @override
   void initState() {
@@ -75,7 +78,6 @@ class _ChatPageState extends State<ChatPage> {
 
     _controller.clear();
   }
-
   void _listen() async {
     if (!_isListening) {
       bool available = await _speech.initialize(
@@ -94,17 +96,46 @@ class _ChatPageState extends State<ChatPage> {
       if (available) {
         setState(() => _isListening = true);
         _speech.listen(
-          onResult: (val) => setState(() {
-            _recognizedText = val.recognizedWords;
-            _controller.text = _recognizedText;
-          }),
+          onResult: (val) {
+            setState(() {
+              _recognizedText = val.recognizedWords;
+              _controller.text = _recognizedText;
+            });
+            _resetStopListeningTimer(); // 입력 시 타이머 리셋
+          },
           localeId: "ko_KR", // Set the language to Korean
         );
+        _resetStopListeningTimer(); // 타이머 시작
       }
     } else {
-      setState(() => _isListening = false);
-      _speech.stop();
+      _stopListening();
     }
+  }
+
+  void _resetStopListeningTimer() {
+    _stopListeningTimer?.cancel(); // 기존 타이머 취소
+    _stopListeningTimer = Timer(Duration(seconds: _noInputTimeout), () {
+      _stopListening(); // 타이머 만료 시 마이크 중지 및 메시지 전송
+    });
+  }
+
+  void _stopListening() {
+    if (_isListening) {
+      _speech.stop();
+      setState(() {
+        _isListening = false;
+      });
+      if (_controller.text.isNotEmpty) {
+        _sendMessage(); // 자동으로 메시지 전송
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _stopListeningTimer?.cancel();
+    _speech.stop();
+    super.dispose();
   }
 
   Widget _buildMessage(Map<String, String> message) {
