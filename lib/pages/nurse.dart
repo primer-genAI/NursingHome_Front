@@ -261,11 +261,11 @@ class _PatientSchedulePageState extends State<NursePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('상세한 일과표 보러가기    >', style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text('현재 시간: ${TimeOfDay.now().format(context)}'),
+                        Text('상세한 일과표 보러가기        >', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text('현재 시간: ${TimeOfDay.now().format(context)}', style: TextStyle(fontSize: 16)),
                         SizedBox(height: 8),
-                        Text('환자: ${currentActivity['patient']}'),
-                        Text('의료진: ${currentActivity['staff']}'),
+                        Text('환자: ${currentActivity['patient']}', style: TextStyle(fontSize: 16)),
+                        Text('의료진: ${currentActivity['staff']}', style: TextStyle(fontSize: 16)),
                       ],
                     ),
                   ),
@@ -319,9 +319,9 @@ class _PatientSchedulePageState extends State<NursePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('$currentMeal 식단', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          Text('칼로리: ${mealDetails['calories']} kcal'),
+                          Text('칼로리: ${mealDetails['calories']} kcal', style: TextStyle(fontSize: 16)),
                           SizedBox(height: 16),
-                          Text('메뉴: ${mealDetails['menu']}'),
+                          Text('메뉴: ${mealDetails['menu']}', style: TextStyle(fontSize: 16)),
                           SizedBox(height: 8),
                           if (mealDetails['image'] != null)
                             GestureDetector(
