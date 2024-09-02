@@ -134,7 +134,7 @@ class NoticePage extends StatelessWidget {
       },
       child: Text(
         '월간 환자 상태 보고서',
-        style: TextStyle(fontSize: fontSize),
+        style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
       ),
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
@@ -160,18 +160,67 @@ class NoticePage extends StatelessWidget {
           ),
         ],
       ),
-      child: Text(
-        '이름: 이성식 (55세 / 남자)\n'
-            '입원일: 2023년8월20일\n'
-            '병실번호: 503호\n'
-            '담당의사: 김철수\n'
-            '기간: 2024년 7월\n\n'
-            '상태요약: 현재 아버님 상태는 입원 당시 전립선 비대증과 전립선암, 뇌경색, 고혈압, 강직성 편마비, 인지기능 저하, 보행 장애가 있으셨는데요. '
-            '지금 현재는 식사 잘하시고, 병원에서 해드릴 수 있는 보존적 치료를 하고 계십니다. 보존적 치료를 하면서 증상에 맞춰서 치료를 진행하고 있는데, '
-            '약물 치료, 재활 치료, 지능력 향상 치료를 진행하고 있습니다. 현재 혈압이나 맥박, 체온은 다 정상이시고, 다른 이상 증상은 없으십니다. '
-            '지금 현재 의료진의 재활 치료와 약물 치료를 잘 받고 계십니다.\n',
-        style: TextStyle(fontSize: 25),
+      child: RichText(
+        text: TextSpan(
+          style: TextStyle(fontSize: 25, color: Colors.black), // 기본 텍스트 스타일
+          children: <TextSpan>[
+            TextSpan(
+              text: '◦ 이름: ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: '이성식 (55세 / 남자)\n'),
+
+            TextSpan(
+              text: '◦ 입원일: ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: '2023년 8월 20일\n'),
+
+            TextSpan(
+              text: '◦ 병실번호: ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: '503호\n'),
+
+            TextSpan(
+              text: '◦ 담당의사: ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: '김철수\n'),
+
+            TextSpan(
+              text: '◦ 기간: ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: '2024년 7월\n\n'),
+
+            TextSpan(
+              text: '◦ 상태요약: ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text: '현재 아버님 상태는 입원 당시 전립선 비대증과 전립선암, 뇌경색, 고혈압, 강직성 편마비, 인지기능 저하, 보행 장애가 있으셨는데요. '
+                  '지금 현재는 식사 잘하시고, 병원에서 해드릴 수 있는 보존적 치료를 하고 계십니다. 보존적 치료를 하면서 증상에 맞춰서 치료를 진행하고 있는데, '
+                  '약물 치료, 재활 치료, 지능력 향상 치료를 진행하고 있습니다. 현재 혈압이나 맥박, 체온은 다 정상이시고, 다른 이상 증상은 없으십니다. '
+                  '지금 현재 의료진의 재활 치료와 약물 치료를 잘 받고 계십니다.\n',
+            ),
+          ],
+        ),
       ),
+
+
+      // child: Text(
+      //   '이름: 이성식 (55세 / 남자)\n'
+      //       '입원일: 2023년8월20일\n'
+      //       '병실번호: 503호\n'
+      //       '담당의사: 김철수\n'
+      //       '기간: 2024년 7월\n\n'
+      //       '상태요약: 현재 아버님 상태는 입원 당시 전립선 비대증과 전립선암, 뇌경색, 고혈압, 강직성 편마비, 인지기능 저하, 보행 장애가 있으셨는데요. '
+      //       '지금 현재는 식사 잘하시고, 병원에서 해드릴 수 있는 보존적 치료를 하고 계십니다. 보존적 치료를 하면서 증상에 맞춰서 치료를 진행하고 있는데, '
+      //       '약물 치료, 재활 치료, 지능력 향상 치료를 진행하고 있습니다. 현재 혈압이나 맥박, 체온은 다 정상이시고, 다른 이상 증상은 없으십니다. '
+      //       '지금 현재 의료진의 재활 치료와 약물 치료를 잘 받고 계십니다.\n',
+      //   style: TextStyle(fontSize: 25),
+      // ),
     );
   }
 }

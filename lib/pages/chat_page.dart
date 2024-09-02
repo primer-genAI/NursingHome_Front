@@ -4,6 +4,7 @@ import '../global_state.dart';
 import 'dart:convert';
 import 'dart:math'; // 무작위 선택을 위해 추가
 import 'dart:async'; // 타이머를 위해 추가
+import 'dart:html';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:flutter_tts/flutter_tts.dart'; // TTS 패키지 추가
 
@@ -31,8 +32,20 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
+    requestMicrophonePermission();
     _speech = stt.SpeechToText();
     _tts = FlutterTts(); // TTS 인스턴스 초기화
+  }
+
+  Future<void> requestMicrophonePermission() async {
+    try {
+      final stream = await window.navigator.mediaDevices
+          ?.getUserMedia({'audio': true});
+      // 마이크 권한이 승인된 경우 처리
+    } catch (e) {
+      // 마이크 권한이 거부된 경우 처리
+      print("Microphone permission denied: $e");
+    }
   }
 
   Future<void> _sendMessage() async {
@@ -64,7 +77,9 @@ class _ChatPageState extends State<ChatPage> {
         setState(() {
           messages.add({"role": "bot", "content": responseBody['response']});
         });
+
         await _tts.speak(responseBody['response']); // TTS로 입력된 텍스트 읽어줌
+
       } else {
         setState(() {
           messages.add({"role": "error", "content": "Error: ${response.statusCode}"});

@@ -236,31 +236,31 @@ class _DoctorPageState extends State<DoctorPage> {
     switch (vitalSign) {
       case '혈압':
         return [
-          ChartData('10:00', 120),
+          ChartData('08:00', 120),
           ChartData('12:00', 125),
-          ChartData('14:00', 130),
-          ChartData('16:00', 128),
+          ChartData('16:00', 130),
+          ChartData('20:00', 128),
         ];
       case '맥박':
         return [
-          ChartData('10:00', 70),
+          ChartData('08:00', 70),
           ChartData('12:00', 75),
-          ChartData('14:00', 72),
-          ChartData('16:00', 68),
+          ChartData('16:00', 72),
+          ChartData('20:00', 68),
         ];
       case '호흡':
         return [
-          ChartData('10:00', 16),
+          ChartData('08:00', 16),
           ChartData('12:00', 18),
-          ChartData('14:00', 17),
-          ChartData('16:00', 19),
+          ChartData('16:00', 17),
+          ChartData('20:00', 19),
         ];
       case '체온':
         return [
-          ChartData('10:00', 36.5),
+          ChartData('08:00', 36.5),
           ChartData('12:00', 36.7),
-          ChartData('14:00', 36.6),
-          ChartData('16:00', 36.8),
+          ChartData('16:00', 36.6),
+          ChartData('20:00', 36.8),
         ];
       default:
         return [];

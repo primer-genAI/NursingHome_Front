@@ -42,7 +42,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
           children: [
             // 전체 상태 섹션
             _buildPatientInfoSection(screenWidth, screenHeight),
-            SizedBox(height: 15),
+            SizedBox(height: 35),
             // AI 상담사 선택하기 섹션
             _buildAINurseSelectSection(context, screenWidth),
           ],
@@ -216,7 +216,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
           ),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 20, width: screenWidth),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 양쪽에 여백을 균등하게 분배
           children: [
@@ -280,7 +280,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
         SizedBox(height: 4),
         Text(
           subtitle,
-          style: TextStyle(fontSize: fontSizeSubtitle * 0.8),
+          style: TextStyle(fontSize: fontSizeSubtitle * 0.7),
           textAlign: TextAlign.center,
         ),
       ],

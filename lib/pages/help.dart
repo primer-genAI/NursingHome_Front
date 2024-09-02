@@ -28,14 +28,14 @@ class HelpPage extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              '전화번호: 010-1234-5678',
+              '전화번호: 010-5201-7914',
               style: TextStyle(
                 fontSize: 20,
               ),
             ),
             SizedBox(height: 10),
             Text(
-              '이메일: any001004@gmail.com',
+              '이메일: any001004@naver.com',
               style: TextStyle(
                 fontSize: 20,
               ),

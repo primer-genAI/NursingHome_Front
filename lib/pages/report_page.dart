@@ -22,13 +22,41 @@ class _ReportPageState extends State<ReportPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                '이름: 이성식 (55세 / 남자)\n'
-                    '입원일: 2023년8월20일\n'
-                    '병실번호: 503호\n'
-                    '담당의사: 김철수\n'
-                    '기간: 2024년 7월\n',
-                style: TextStyle(fontSize: 22), // Increased font size
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(fontSize: 22, color: Colors.black), // 기본 텍스트 스타일
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: '◦ 이름: ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(text: '이성식 (55세 / 남자)\n'),
+
+                    TextSpan(
+                      text: '◦ 입원일: ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(text: '2023년 8월 20일\n'),
+
+                    TextSpan(
+                      text: '◦ 병실번호: ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(text: '503호\n'),
+
+                    TextSpan(
+                      text: '◦ 담당의사: ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(text: '김철수\n'),
+
+                    TextSpan(
+                      text: '◦ 기간: ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(text: '2024년 7월\n'),
+                  ],
+                ),
               ),
               const SizedBox(height: 20),
               _buildPatientSummary(),
@@ -62,7 +90,7 @@ class _ReportPageState extends State<ReportPage> {
         crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
         children: [
           Text(
-            '상태 요약',
+            '◦ 상태 요약',
             style: TextStyle(
               fontSize: 26, // Increased font size
               fontWeight: FontWeight.bold,
@@ -216,7 +244,7 @@ class _ReportPageState extends State<ReportPage> {
           ),
         ],
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -227,10 +255,34 @@ class _ReportPageState extends State<ReportPage> {
             ),
           ),
           SizedBox(height: 10), // Added spacing between title and content
-          Text(
-            '병원 연락처 : 02-2347-1206\n병원 이메일: contact@nursinghospital.com\n병원 홈페이지: http://www.nursinghospital.com',
-            style: TextStyle(fontSize: 20, height: 1.5), // Adjusted font size and line height
+          RichText(
+            text: TextSpan(
+              style: TextStyle(fontSize: 18, height: 1.5, color: Colors.black), // 기본 텍스트 스타일
+              children: <TextSpan>[
+                TextSpan(
+                  text: '◦ 병원 연락처: ',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(text: '02-2347-1206\n'),
+
+                TextSpan(
+                  text: '◦ 병원 이메일: ',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(text: 'contact@nursinghospital.com\n'),
+
+                TextSpan(
+                  text: '◦ 병원 홈페이지: \n',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(text: 'http://www.nursinghospital.com'),
+              ],
+            ),
           ),
+          // Text(
+          //   '병원 연락처 : 02-2347-1206\n병원 이메일: contact@nursinghospital.com\n병원 홈페이지: http://www.nursinghospital.com',
+          //   style: TextStyle(fontSize: 20, height: 1.5), // Adjusted font size and line height
+          // ),
         ],
       ),
     );
