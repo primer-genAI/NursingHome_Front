@@ -25,16 +25,17 @@ class _MainLayoutState extends State<MainLayout> {
   }
 
   Future<bool> _onWillPop() async {
-    // 뒤로가기 버튼이 눌렸을 때 로그인 화면으로 돌아가지 않게 함
     if (_selectedIndex == 0) {
-      return true; // 앱 종료 또는 기본 동작 유지
+      // 현재 HomePage인 경우에는 앱을 종료하거나 기본 동작을 유지함
+      return true;
     } else {
+      // HomePage가 아닌 경우, HomePage로 돌아가기
       setState(() {
         _selectedIndex = 0;
         GlobalState.selectedIndex = 0;
       });
-      _pageController.jumpToPage(0); // HomePage로 돌아가기
-      return false; // 로그인 페이지로 돌아가지 않음
+      _pageController.jumpToPage(0); // HomePage로 이동
+      return false; // 뒤로가기 동작 중지 (로그인 페이지로 가지 않음)
     }
   }
 
@@ -58,14 +59,14 @@ class _MainLayoutState extends State<MainLayout> {
                 ? PatientInfoPage(userInfo: GlobalState.userInfo ?? {})
                 : HomePage(onLogin: navigateToPatientInfoPage), // 로그인 상태에 따라 페이지 변경
             NoticePage(), // Notice Page
-            HelpPage(), // Notice Page
+            HelpPage(), // Help Page
           ],
         ),
         bottomNavigationBar: GlobalState.isLoggedIn
             ? CustomNavBar(
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-        )
+                currentIndex: _selectedIndex,
+                onTap: _onItemTapped,
+              )
             : null, // 로그인 후에만 네비게이션 바 표시
       ),
     );

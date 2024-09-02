@@ -36,7 +36,8 @@ class _DoctorPageState extends State<DoctorPage> {
   // 반원형 게이지
   Widget _buildOverallStatusGauge() {
     return Container(
-      height: 300,
+      height: 400,
+      width: 800,
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -225,7 +226,7 @@ class _DoctorPageState extends State<DoctorPage> {
       child: Text(vitalSign),
       style: ElevatedButton.styleFrom(
         backgroundColor:
-        selectedVitalSign == vitalSign ? Colors.blue : Colors.grey,
+            selectedVitalSign == vitalSign ? Colors.blue : Colors.grey,
         foregroundColor: Colors.white,
         textStyle: const TextStyle(fontSize: 18),
       ),

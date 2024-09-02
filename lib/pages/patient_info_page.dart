@@ -27,57 +27,28 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    // 화면 크기 가져오기
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('홈', style: TextStyle(fontSize: screenWidth * 0.07)),
-        automaticallyImplyLeading: true, // 뒤로가기 버튼 자동 추가
-      ),
-      body: SingleChildScrollView( // 스크롤 가능하도록 추가
-        padding: const EdgeInsets.all(5.0),
-        child: Column(
-          children: [
-            // 전체 상태 섹션
-            _buildPatientInfoSection(screenWidth, screenHeight),
-            SizedBox(height: 35),
-            // AI 상담사 선택하기 섹션
-            _buildAINurseSelectSection(context, screenWidth),
-          ],
+    // WillPopScope로 뒤로 가기 버튼을 커스터마이즈하여 로그인이 풀리지 않도록 설정
+    return WillPopScope(
+      onWillPop: () async {
+        // 뒤로 가기 시 PatientInfoPage로 유지, 로그인 상태 유지
+        Navigator.pop(context);  // 스택에서 이전 페이지로 돌아갑니다.
+        return false; // 기본 뒤로 가기 동작을 취소
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('홈', style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.07)),
+          automaticallyImplyLeading: true, // 뒤로가기 버튼 자동 추가
         ),
-      ),
-      bottomNavigationBar: CustomNavBar(
-        currentIndex: GlobalState.selectedIndex,
-        onTap: (index) {
-          setState(() {
-            GlobalState.selectedIndex = index;
-          });
-
-          // 네비게이션 바의 선택에 따라 페이지 전환
-          if (index == 0) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => AINursePage()),
-            );
-          } else if (index == 1) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => PatientInfoPage(userInfo: widget.userInfo)),
-            );
-          } else if (index == 2) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => NoticePage()),
-            );
-          } else {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => HelpPage()),
-            );
-          }
-        },
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            children: [
+              _buildPatientInfoSection(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height),
+              SizedBox(height: 35),
+              _buildAINurseSelectSection(context, MediaQuery.of(context).size.width),
+            ],
+          ),
+        ),
       ),
     );
   }

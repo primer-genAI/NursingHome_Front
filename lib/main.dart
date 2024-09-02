@@ -11,14 +11,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(
-        onLogin: (userInfo) {
-          GlobalState.userInfo = userInfo;
-          GlobalState.isLoggedIn = true;
-          runApp(MyAppWithLayout());
-        },
-      ),
+      home: GlobalState.isLoggedIn ? MyAppWithLayout() : HomePage(onLogin: _handleLogin),
     );
+  }
+
+  void _handleLogin(Map<String, dynamic> userInfo) {
+    GlobalState.userInfo = userInfo;
+    GlobalState.isLoggedIn = true;
+    runApp(MyAppWithLayout()); // 로그인 후 새로운 레이아웃으로 이동
   }
 }
 

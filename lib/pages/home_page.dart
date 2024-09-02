@@ -17,17 +17,8 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController passwordController = TextEditingController();
   bool _isPasswordVisible = false;
 
-  // 환자명 리스트
-  final List<String> patientIds = [
-    "남A",
-    "남B",
-    "남C",
-    "여A",
-    "여B",
-    "여C",
-  ];
+  final List<String> patientIds = ["남A", "남B", "남C", "여A", "여B", "여C"];
 
-  // 환자 실명 리스트
   final Map<String, String> realNames = {
     "남A": "김영수",
     "남B": "박정희",
@@ -37,9 +28,8 @@ class _HomePageState extends State<HomePage> {
     "여C": "유복자",
   };
 
-  String? _selectedPatientId; // 선택된 환자명
+  String? _selectedPatientId;
 
-  // 비밀번호 맵 (환자명에 따른 비밀번호 매핑)
   final Map<String, String> patientPasswords = {
     "남A": "password123",
     "남B": "password456",
@@ -49,23 +39,9 @@ class _HomePageState extends State<HomePage> {
     "여C": "password987",
   };
 
-  // 로그인 API 호출 함수
   Future<void> _login() async {
     if (_selectedPatientId == null) {
-      // 환자명을 선택하지 않은 경우 경고 메시지
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('환자명 선택'),
-          content: Text('로그인할 환자명을 선택하세요.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('확인'),
-            ),
-          ],
-        ),
-      );
+      _showAlertDialog('환자명 선택', '로그인할 환자명을 선택하세요.');
       return;
     }
 
@@ -73,120 +49,119 @@ class _HomePageState extends State<HomePage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://104.198.208.62:5001/login'),
-        headers: {'Content-Type': 'application/json', 'accept':'application/json'},
-        body: json.encode({
-          'patient_id': _selectedPatientId,
-        }),
+        Uri.parse('http://localhost:56369/login'),
+        // Uri.parse('http://104.198.208.62:5001/login'),
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': 'application/json'
+        },
+        body: json.encode({'patient_id': _selectedPatientId}),
       );
 
       if (response.statusCode == 200) {
         final userInfo = json.decode(response.body);
         GlobalState.userInfo = userInfo;
+        GlobalState.isLoggedIn = true; // 로그인 상태 업데이트
 
-        // 로그인 성공 시, 사용자 정보를 다음 화면으로 전달
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PatientInfoPage(userInfo: userInfo),
-          ),
-        );
+        // 로그인 성공 시 콜백 호출
+        widget.onLogin(userInfo);
       } else {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('로그인 실패'),
-            content: Text('사용자명이나 비밀번호가 올바르지 않습니다.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('확인'),
-              ),
-            ],
-          ),
-        );
+        _showAlertDialog('로그인 실패', '사용자명이나 비밀번호가 올바르지 않습니다.');
       }
     } catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('오류'),
-          content: Text('로그인 중 오류가 발생했습니다. 네트워크 상태를 확인하세요.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('확인'),
-            ),
-          ],
-        ),
-      );
+      _showAlertDialog('오류', '로그인 중 오류가 발생했습니다. 네트워크 상태를 확인하세요.');
     }
+  }
+
+  void _showAlertDialog(String title, String content) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('확인'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/images/logo.png'), // Ensure this path is correct
-              SizedBox(height: 20),
-              Text(
-                '효도AI',
-                style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              // 부제목 추가
-              Text(
-                '환자안심케어 요양병원 AI', // 부제목 추가
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500,
-                  color: Colors.grey[600], // 옅은 회색으로 설정
-                ), // 적절한 스타일을 설정
-              ),
-              SizedBox(height: 10), // 부제목 아래에 여백 추가
-              Text('실시간 요양병원 환자 정보 손쉽게 확인하세요', style: TextStyle(fontSize: 18)),
-              SizedBox(height: 20),
-              // DropdownButton을 사용하여 환자명을 선택
-              DropdownButton<String>(
-                hint: Text('사용자명을 선택하세요'),
-                value: _selectedPatientId,
-
-                // 환자명 변경 코드 - "남A" -> 실명
-                items: patientIds.map((String id) {
-                  return DropdownMenuItem<String>(
-                    value: id,
-                    child: Text(realNames[id] ?? id),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedPatientId = newValue;
-                    GlobalState.patientId = _selectedPatientId;
-
-                    // 환자명을 선택하면 해당하는 비밀번호를 비밀번호 필드에 자동 입력
-                    passwordController.text = patientPasswords[newValue] ?? "";
-                  });
-                },
-              ),
-              SizedBox(height: 10),
-              TextField(
-                controller: passwordController,
-                decoration: InputDecoration(
-                  labelText: '비밀번호',
-                  labelStyle: TextStyle(fontSize: 18),
-                  border: OutlineInputBorder(),
+    return WillPopScope(
+      // 뒤로 가기 제어
+      onWillPop: () async {
+        if (GlobalState.isLoggedIn) {
+          return true; // 로그인 상태 유지 시 뒤로 가기 허용
+        } else {
+          return false; // 로그인 상태가 아니면 뒤로 가기 막기
+        }
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                    'assets/images/logo.png'), // Ensure this path is correct
+                SizedBox(height: 20),
+                Text(
+                  '효도AI',
+                  style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
                 ),
-                obscureText: true,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _login, // 로그인 버튼을 누르면 API 호출
-                child: Text('로그인', style: TextStyle(fontSize: 18)),
-              ),
-            ],
+                SizedBox(height: 10),
+                Text(
+                  '환자안심케어 요양병원 AI',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text('실시간 요양병원 환자 정보 손쉽게 확인하세요',
+                    style: TextStyle(fontSize: 18)),
+                SizedBox(height: 20),
+                DropdownButton<String>(
+                  hint: Text('사용자명을 선택하세요'),
+                  value: _selectedPatientId,
+                  items: patientIds.map((String id) {
+                    return DropdownMenuItem<String>(
+                      value: id,
+                      child: Text(realNames[id] ?? id),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedPatientId = newValue;
+                      GlobalState.patientId = _selectedPatientId;
+                      passwordController.text =
+                          patientPasswords[newValue] ?? "";
+                    });
+                  },
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                    labelText: '비밀번호',
+                    labelStyle: TextStyle(fontSize: 18),
+                    border: OutlineInputBorder(),
+                  ),
+                  obscureText: true,
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _login,
+                  child: Text('로그인', style: TextStyle(fontSize: 18)),
+                ),
+              ],
+            ),
           ),
         ),
       ),
