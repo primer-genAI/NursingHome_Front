@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_nav_bar.dart';
 import '../global_state.dart';
 import 'ai_nurse.dart';
-import 'notice.dart';
 import 'chat_page.dart';
+import 'notice.dart';
+import 'help.dart';
 
 class PatientInfoPage extends StatefulWidget {
   final Map<String, dynamic> userInfo;
@@ -94,6 +95,11 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => NoticePage()),
+            );
+          } else {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HelpPage()),
             );
           }
         },

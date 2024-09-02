@@ -20,9 +20,10 @@ class CustomNavBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          _buildNavItem(Icons.medical_services, 'AI 상담사', 0, iconSize, selectedFontSize, unselectedFontSize),
           _buildNavItem(Icons.home, '홈', 1, iconSize, selectedFontSize, unselectedFontSize),
+          _buildNavItem(Icons.medical_services, 'AI 상담사', 0, iconSize, selectedFontSize, unselectedFontSize),
           _buildNavItem(Icons.notifications, '안내사항', 2, iconSize, selectedFontSize, unselectedFontSize),
+          _buildNavItem(Icons.help_outline, '문의사항', 3, iconSize, selectedFontSize, unselectedFontSize), // 문의사항 버튼 추가
         ],
       ),
     );
