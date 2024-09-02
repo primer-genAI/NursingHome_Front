@@ -27,7 +27,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('메인 페이지', style: TextStyle(fontSize: 28)),
+        title: Text('홈', style: TextStyle(fontSize: 28)),
         automaticallyImplyLeading: true, // 뒤로가기 버튼 자동 추가
       ),
       body: Padding(

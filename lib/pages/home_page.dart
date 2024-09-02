@@ -138,6 +138,14 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 10),
+              // 부제목 추가
+              Text(
+                '환자안심케어 요양병원 AI', // 부제목 추가
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500,
+                  color: Colors.grey[600], // 옅은 회색으로 설정
+                ), // 적절한 스타일을 설정
+              ),
+              SizedBox(height: 10), // 부제목 아래에 여백 추가
               Text('실시간 요양병원 환자 정보 손쉽게 확인하세요', style: TextStyle(fontSize: 18)),
               SizedBox(height: 20),
               // DropdownButton을 사용하여 환자명을 선택
