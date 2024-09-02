@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'chart_data.dart';
+import '../global_state.dart';
 
 class DoctorPage extends StatefulWidget {
   @override
@@ -23,13 +24,33 @@ class _DoctorPageState extends State<DoctorPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildOverallStatusGauge(),
+              _buildOverallStatusSection(), // 첫 번째 박스(게이지) 섹션
               SizedBox(height: 20),
-              _buildVitalSignsGraph(),
+              _buildTodayStatusSection(), // "오늘의 상태" 섹션
+              SizedBox(height: 20),
+              _buildVitalSignsSection(), // 두 번째 박스(그래프) 섹션
             ],
           ),
         ),
       ),
+    );
+  }
+
+  // 첫 번째 박스에 제목 추가
+  Widget _buildOverallStatusSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '종합 상태',
+          style: TextStyle(
+            fontSize: 24, // 제목의 폰트 크기 설정
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 10), // 제목과 게이지 사이 간격
+        _buildOverallStatusGauge(), // 종합 상태 게이지
+      ],
     );
   }
 
@@ -162,57 +183,104 @@ class _DoctorPageState extends State<DoctorPage> {
     return 75;
   }
 
-  Widget _buildVitalSignsGraph() {
-    return Container(
-      height: 300,
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+  // "오늘의 상태" 섹션
+  Widget _buildTodayStatusSection() {
+    final userInfo = GlobalState.userInfo ?? {'병실번호': 'N/A'};
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '오늘의 상태',
+          style: TextStyle(
+            fontSize: 24, // 제목의 폰트 크기 설정
+            fontWeight: FontWeight.bold,
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            '활력 징후',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildVitalSignButton('혈압'),
-              _buildVitalSignButton('맥박'),
-              _buildVitalSignButton('호흡'),
-              _buildVitalSignButton('체온'),
+        ),
+        SizedBox(height: 10), // 제목과 콘텐츠 사이 간격
+        Container(
+          // height: 100,
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
             ],
           ),
-          const SizedBox(height: 10),
-          Expanded(
-            child: SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
-              series: <LineSeries<ChartData, String>>[
-                LineSeries<ChartData, String>(
-                  dataSource: _getVitalSignData(selectedVitalSign),
-                  xValueMapper: (ChartData data, _) => data.time,
-                  yValueMapper: (ChartData data, _) => data.value,
-                ),
-              ],
+          child: Center(
+            child: Text(
+              '${userInfo['오늘상태']}',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
+    );
+  }
+
+  // 활력 징후 그래프 섹션
+  Widget _buildVitalSignsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '활력 징후',
+          style: TextStyle(
+            fontSize: 24, // 제목의 폰트 크기 설정
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 10), // 제목과 콘텐츠 사이 간격
+        Container(
+          height: 300,
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildVitalSignButton('혈압'),
+                  _buildVitalSignButton('맥박'),
+                  _buildVitalSignButton('호흡'),
+                  _buildVitalSignButton('체온'),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Expanded(
+                child: SfCartesianChart(
+                  primaryXAxis: CategoryAxis(),
+                  series: <LineSeries<ChartData, String>>[
+                    LineSeries<ChartData, String>(
+                      dataSource: _getVitalSignData(selectedVitalSign),
+                      xValueMapper: (ChartData data, _) => data.time,
+                      yValueMapper: (ChartData data, _) => data.value,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
