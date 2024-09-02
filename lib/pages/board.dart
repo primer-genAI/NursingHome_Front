@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 class BoardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '요양원 행사 정보',
-      home: EventListPage(),
-    );
+    return EventListPage(); // MaterialApp을 제거하고 직접 EventListPage를 반환
   }
 }
 
@@ -62,6 +59,7 @@ class _EventListPageState extends State<EventListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('요양원 행사 목록'),
+        automaticallyImplyLeading: true, // 뒤로가기 버튼이 활성화되어야 함
       ),
       body: ListView.builder(
         itemCount: events.length,

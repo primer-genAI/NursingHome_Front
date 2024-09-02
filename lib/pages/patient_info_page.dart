@@ -36,20 +36,20 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
         automaticallyImplyLeading: true, // 뒤로가기 버튼 자동 추가
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(5.0),
         child: Column(
           children: [
             // 전체 상태 섹션
             Flexible(
-              flex: 2,
+              flex: 5,
               child: Container(
-                child: _buildPatientInfoSection(screenWidth),
+                child: _buildPatientInfoSection(screenWidth, screenHeight),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 15),
             // AI 상담사 선택하기 섹션
             Flexible(
-              flex: 3,
+              flex: 6,
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -101,7 +101,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     );
   }
 
-  Widget _buildPatientInfoSection(double screenWidth) {
+  Widget _buildPatientInfoSection(double screenWidth, double screenHeight) {
     final String name = widget.userInfo['이름'] ?? '이름 없음';
     final String gender = widget.userInfo['성별'] ?? '성별 없음';
     final int age = widget.userInfo['나이'] ?? 0;
@@ -111,12 +111,12 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     final String doctor = widget.userInfo['담당의사'] ?? '담당의 없음';
     final String imgPath = widget.userInfo['image_path'] ?? 'No Image';
 
-    final String imgUrl = 'http://104.198.208.62/assets/$imgPath';
+    final String imgUrl = 'http://104.198.208.62/static/$imgPath';
 
     final List<dynamic> diagList = widget.userInfo['질환명'] ?? [];
     final String diag = diagList.join(', ');
 
-    double fontSize = screenWidth * 0.035;
+    double fontSize = screenWidth * 0.04;
 
     return Container(
       padding: EdgeInsets.all(20.0),
@@ -165,25 +165,25 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 7),
+                    SizedBox(height: screenHeight*0.005),
                     Text('◦ 이름: $name / $gender, ${age}세', style: TextStyle(fontSize: fontSize)),
-                    SizedBox(height: 7),
+                    SizedBox(height: screenHeight*0.005),
                     Text('◦ 입원일: $admissionDate', style: TextStyle(fontSize: fontSize)),
-                    SizedBox(height: 7),
+                    SizedBox(height: screenHeight*0.005),
                     Text('◦ 병실 번호: $roomNumber호($roomInfo)', style: TextStyle(fontSize: fontSize)),
-                    SizedBox(height: 7),
+                    SizedBox(height: screenHeight*0.005),
                     Text('◦ 담당 의사: $doctor', style: TextStyle(fontSize: fontSize)),
                   ],
                 ),
               ),
             ],
           ),
-          SizedBox(height: 7),
+          SizedBox(height: screenHeight*0.005),
           Text(
             '◦ 질환: $diag',
             style: TextStyle(fontSize: fontSize),
           ),
-          SizedBox(height: 7),
+          SizedBox(height: screenHeight*0.005),
           Text(
             '오늘의 상태 요약:',
             style: TextStyle(
@@ -191,14 +191,12 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 7),
+          SizedBox(height: screenHeight*0.005),
           Text('◦ 특이사항 없음', style: TextStyle(fontSize: fontSize)),
         ],
       ),
     );
   }
-
-
 
   Widget _buildHealthStatusButton(double fontSize) {
     return ElevatedButton(
@@ -211,7 +209,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
       style: ElevatedButton.styleFrom(
         backgroundColor: healthStatus == '양호' ? Colors.green : Colors.red,
         foregroundColor: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: EdgeInsets.symmetric(horizontal: 0.1, vertical: 0.1),
         textStyle: TextStyle(
           fontWeight: FontWeight.bold,
         ),

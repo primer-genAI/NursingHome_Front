@@ -197,6 +197,7 @@ class _PatientSchedulePageState extends State<NursePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('환자와 의료진의 현재 일과'),
+        automaticallyImplyLeading: true, // 뒤로가기 버튼이 활성화되어야 함
         backgroundColor: Colors.purple[200],
       ),
       body: SingleChildScrollView(
