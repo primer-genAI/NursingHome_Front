@@ -40,7 +40,6 @@ class AINursePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-
                 SizedBox(height: screenHeight * 0.02),
                 Text(
                   'AI 상담사 선택하기',
@@ -93,9 +92,11 @@ class AINursePage extends StatelessWidget {
 
   Widget _buildAIConsultantTile(String title, String imagePath, String subtitle, double iconSize, double fontSizeSubtitle) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CircleAvatar(
-          radius: iconSize / 2, // 동적 크기 설정
+          radius: iconSize, // 동적 크기 설정
           backgroundImage: AssetImage(imagePath),
         ),
         SizedBox(height: 10),
@@ -109,7 +110,7 @@ class AINursePage extends StatelessWidget {
         ),
         SizedBox(height: 5),
         Container(
-          width: iconSize * 2, // 동적 크기 설정
+          width: iconSize * 3, // 텍스트의 줄바꿈을 위해 넓이 설정
           child: Text(
             subtitle,
             textAlign: TextAlign.center,

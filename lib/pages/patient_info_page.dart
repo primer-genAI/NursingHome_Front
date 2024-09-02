@@ -26,22 +26,50 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 화면 크기 가져오기
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('홈', style: TextStyle(fontSize: 28)),
+        title: Text('홈', style: TextStyle(fontSize: screenWidth * 0.07)),
         automaticallyImplyLeading: true, // 뒤로가기 버튼 자동 추가
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildPatientInfoSection(),
-              SizedBox(height: 20), // 추가
-              _buildAINurseSelectSection(context), // AI 상담사 선택 섹션 추가
-            ],
-          ),
+        child: Column(
+          children: [
+            // 전체 상태 섹션
+            Flexible(
+              flex: 2,
+              child: Container(
+                child: _buildPatientInfoSection(screenWidth),
+              ),
+            ),
+            SizedBox(height: 20),
+            // AI 상담사 선택하기 섹션
+            Flexible(
+              flex: 3,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: _buildAINurseSelectSection(context, screenWidth),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: CustomNavBar(
@@ -73,7 +101,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     );
   }
 
-  Widget _buildPatientInfoSection() {
+  Widget _buildPatientInfoSection(double screenWidth) {
     final String name = widget.userInfo['이름'] ?? '이름 없음';
     final String gender = widget.userInfo['성별'] ?? '성별 없음';
     final int age = widget.userInfo['나이'] ?? 0;
@@ -86,7 +114,9 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     final String imgUrl = 'http://104.198.208.62/assets/$imgPath';
 
     final List<dynamic> diagList = widget.userInfo['질환명'] ?? [];
-    final String diag = diagList.join(', '); // 리스트를 문자열로 변환
+    final String diag = diagList.join(', ');
+
+    double fontSize = screenWidth * 0.035;
 
     return Container(
       padding: EdgeInsets.all(20.0),
@@ -110,62 +140,78 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
               Text(
                 '전체 상태: ',
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: fontSize,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              _buildHealthStatusButton(),
+              _buildHealthStatusButton(fontSize),
             ],
           ),
-          SizedBox(height: 16),
-          Center(
-            child: CircleAvatar(
-              radius: 100,  // 적절한 크기로 변경
-              backgroundImage: NetworkImage(imgUrl),  // 경로 확인 필요
-            ),
-          ),
-          SizedBox(height: 20),
-          Column(
+          SizedBox(height: 5),
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('◦ 이름: $name / $gender, ${age}세', style: TextStyle(fontSize: 24)),
-              SizedBox(height: 16),
-              Text('◦ 입원일: $admissionDate', style: TextStyle(fontSize: 24)),
-              SizedBox(height: 16),
-              Text('◦ 병실 번호: $roomNumber호($roomInfo)', style: TextStyle(fontSize: 24)),
-              SizedBox(height: 16),
-              Text('◦ 담당 의사: $doctor', style: TextStyle(fontSize: 24)),
-              SizedBox(height: 16),
-              Text('◦ 질환: $diag', style: TextStyle(fontSize: 24)),
+              Column(
+                children: [
+                  CircleAvatar(
+                    radius: 60,
+                    backgroundImage: NetworkImage(imgUrl),
+                  ),
+                ],
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 7),
+                    Text('◦ 이름: $name / $gender, ${age}세', style: TextStyle(fontSize: fontSize)),
+                    SizedBox(height: 7),
+                    Text('◦ 입원일: $admissionDate', style: TextStyle(fontSize: fontSize)),
+                    SizedBox(height: 7),
+                    Text('◦ 병실 번호: $roomNumber호($roomInfo)', style: TextStyle(fontSize: fontSize)),
+                    SizedBox(height: 7),
+                    Text('◦ 담당 의사: $doctor', style: TextStyle(fontSize: fontSize)),
+                  ],
+                ),
+              ),
             ],
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 7),
+          Text(
+            '◦ 질환: $diag',
+            style: TextStyle(fontSize: fontSize),
+          ),
+          SizedBox(height: 7),
           Text(
             '오늘의 상태 요약:',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: fontSize,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 16),
-          Text('◦ 특이사항 없음', style: TextStyle(fontSize: 24)),
+          SizedBox(height: 7),
+          Text('◦ 특이사항 없음', style: TextStyle(fontSize: fontSize)),
         ],
       ),
     );
   }
 
-  Widget _buildHealthStatusButton() {
+
+
+  Widget _buildHealthStatusButton(double fontSize) {
     return ElevatedButton(
       onPressed: () {
         setState(() {
           healthStatus = healthStatus == '양호' ? '위험' : '양호';
         });
       },
-      child: Text(healthStatus, style: TextStyle(fontSize: 22)),
+      child: Text(healthStatus, style: TextStyle(fontSize: fontSize)),
       style: ElevatedButton.styleFrom(
         backgroundColor: healthStatus == '양호' ? Colors.green : Colors.red,
         foregroundColor: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         textStyle: TextStyle(
           fontWeight: FontWeight.bold,
         ),
@@ -173,90 +219,76 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     );
   }
 
-  Widget _buildAINurseSelectSection(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+  Widget _buildAINurseSelectSection(BuildContext context, double screenWidth) {
     double iconSize = screenWidth * 0.2;
     double fontSizeTitle = screenWidth * 0.07;
     double fontSizeSubtitle = screenWidth * 0.05;
 
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: screenHeight * 0.02),
-          Text(
-            'AI 상담사 선택하기',
-            style: TextStyle(
-              fontSize: fontSizeTitle,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          'AI 상담사 선택하기',
+          style: TextStyle(
+            fontSize: fontSizeTitle,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 양쪽에 여백을 균등하게 분배
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChatPage(nurseIdx: 1)),
+                  );
+                },
+                child: _buildAIConsultantTile(
+                  'AI 상담사 친절이',
+                  'assets/images/nurse1.png',
+                  '친절하고 자세하게 환자분의 상황을 설명해드리겠습니다.',
+                  iconSize,
+                  fontSizeSubtitle,
+                ),
+              ),
             ),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: screenHeight * 0.04),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 양쪽에 여백을 균등하게 분배
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ChatPage(nurseIdx: 1)),
-                    );
-                  },
-                  child: _buildAIConsultantTile(
-                    'AI 상담사 친절이',
-                    'assets/images/nurse1.png',
-                    '친절하고 자세하게 환자분의 상황을 설명해드리겠습니다.',
-                    iconSize,
-                    fontSizeSubtitle,
-                  ),
+            SizedBox(width: screenWidth * 0.05), // 타일 사이에 여백 추가
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChatPage(nurseIdx: 2)),
+                  );
+                },
+                child: _buildAIConsultantTile(
+                  'AI 상담사 간단이',
+                  'assets/images/nurse2.png',
+                  '전문적이고 요점만 간단히 환자분의 상황을 알려드립니다.',
+                  iconSize,
+                  fontSizeSubtitle,
                 ),
               ),
-              SizedBox(width: screenWidth * 0.05), // 타일 사이에 여백 추가
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ChatPage(nurseIdx: 2)),
-                    );
-                  },
-                  child: _buildAIConsultantTile(
-                    'AI 상담사 간단이',
-                    'assets/images/nurse2.png',
-                    '전문적이고 요점만 간단히 환자분의 상황을 알려드립니다.',
-                    iconSize,
-                    fontSizeSubtitle,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: screenHeight * 0.03),
-        ],
-      ),
+            ),
+          ],
+        ),
+      ],
     );
   }
-  // 필요에 따라 _buildAIConsultantTile 메서드도 추가
+
   Widget _buildAIConsultantTile(String title, String imagePath, String subtitle, double iconSize, double fontSizeSubtitle) {
     return Column(
       children: [
-
         CircleAvatar(
           radius: iconSize,  // 적절한 크기로 변경
-          backgroundImage: NetworkImage(imagePath),  // 경로 확인 필요
+          backgroundImage: AssetImage(imagePath),
         ),
-
-        // Image.asset(
-        //   imagePath,
-        //   width: iconSize,
-        //   height: iconSize,
-        // ),
-        //
         SizedBox(height: 8),
         Text(
           title,
