@@ -96,7 +96,7 @@ class _DoctorPageState extends State<DoctorPage> {
                 color: Colors.yellow,
                 startWidth: 50,
                 endWidth: 50,
-                label: '보통',
+                label: '양호',
                 labelStyle: GaugeTextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -109,7 +109,7 @@ class _DoctorPageState extends State<DoctorPage> {
                 color: Colors.green,
                 startWidth: 50,
                 endWidth: 50,
-                label: '건강',
+                label: '호전',
                 labelStyle: GaugeTextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -122,7 +122,7 @@ class _DoctorPageState extends State<DoctorPage> {
                 color: Colors.blue,
                 startWidth: 50,
                 endWidth: 50,
-                label: '최고',
+                label: '건강',
                 labelStyle: GaugeTextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
