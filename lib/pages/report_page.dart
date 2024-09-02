@@ -60,7 +60,7 @@ class _ReportPageState extends State<ReportPage> {
                       text: '◦ 병실번호: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(text: '${userInfo['병실번호']}\n'),
+                    TextSpan(text: '${userInfo['병실번호']}호\n'),
 
                     TextSpan(
                       text: '◦ 담당의사: ',
@@ -72,7 +72,7 @@ class _ReportPageState extends State<ReportPage> {
                       text: '◦ 기간: ',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(text: '2024-06-30\n'), // 날짜 고려 ?
+                    TextSpan(text: '${userInfo['기간']}\n'), // 날짜 고려 ?
                   ],
                 ),
               ),
@@ -90,6 +90,20 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget _buildPatientSummary() {
+    final userInfo = GlobalState.userInfo;
+
+    if (userInfo == null) {
+      // userInfo가 null인 경우에 대한 처리
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('월간 환자 상태 보고서'),
+        ),
+        body: Center(
+          child: Text('사용자 정보를 불러올 수 없습니다.'),
+        ),
+      );
+    }
+
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -104,7 +118,7 @@ class _ReportPageState extends State<ReportPage> {
           ),
         ],
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
         children: [
           Text(
@@ -116,10 +130,7 @@ class _ReportPageState extends State<ReportPage> {
           ),
           SizedBox(height: 10), // Added spacing between title and content
           Text(
-            '현재 아버님 상태는 입원 당시 전립선 비대증과 전립선암, 뇌경색, 고혈압, 강직성 편마비, 인지기능 저하, 보행 장애가 있으셨는데요. '
-                '지금 현재는 식사 잘하시고, 병원에서 해드릴 수 있는 보존적 치료를 하고 계십니다. 보존적 치료를 하면서 증상에 맞춰서 치료를 진행하고 있는데, '
-                '약물 치료, 재활 치료, 지능력 향상 치료를 진행하고 있습니다. 현재 혈압이나 맥박, 체온은 다 정상이시고, 다른 이상 증상은 없으십니다. '
-                '지금 현재 의료진의 재활 치료와 약물 치료를 잘 받고 계십니다.',
+            '${userInfo['상태요약']}',
             style: TextStyle(fontSize: 20, height: 1.5), // Adjusted font size and line height
           ),
         ],
