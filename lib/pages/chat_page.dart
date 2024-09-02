@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../global_state.dart';
 import 'dart:convert';
+import 'dart:math'; // 무작위 선택을 위해 추가
 import 'package:speech_to_text/speech_to_text.dart' as stt;
-
 
 class ChatPage extends StatefulWidget {
   final int nurseIdx;
@@ -28,7 +28,6 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
     _speech = stt.SpeechToText();
   }
-
 
   Future<void> _sendMessage() async {
     if (_controller.text.isEmpty) return;
@@ -108,7 +107,6 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-
   Widget _buildMessage(Map<String, String> message) {
     bool isHuman = message['role'] == "human";
     bool isError = message['role'] == "error";
@@ -122,8 +120,8 @@ class _ChatPageState extends State<ChatPage> {
             color: isError
                 ? Colors.redAccent
                 : isHuman
-                    ? Colors.blueAccent
-                    : Colors.grey[300],
+                ? Colors.blueAccent
+                : Colors.grey[300],
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(16),
               topRight: Radius.circular(16),
@@ -143,6 +141,59 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+
+  // 추천 질문을 무작위로 3개 선택하는 메서드
+  List<String> _getRandomSuggestions() {
+    List<String> suggestions = [
+      '아버님은 어떠세요?',
+      '많이 아파하지는 않으신가요?',
+      '식사는 잘 하세요?',
+      '약은 잘 드세요?',
+      '거동은 어떠세요?',
+      '밤에 잘 주무세요?',
+      '말씀은 잘 하세요?',
+      '다른데 아프신 데는 없나요?',
+      '병원 방문 예약을 잡을 수 있나요?',
+    ];
+
+    suggestions.shuffle(Random());
+    return suggestions.take(3).toList();
+  }
+
+  // 추천 질문 버튼들을 생성하는 메서드
+  Widget _buildSuggestedQuestions() {
+    List<String> randomSuggestions = _getRandomSuggestions();
+
+    return Container(
+      height: 50, // 높이 설정
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: randomSuggestions.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _controller.text = randomSuggestions[index];
+                });
+                _sendMessage(); // 메시지 자동 전송
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor : Colors.lightGreen, // 버튼 배경색 설정
+              ),
+              child: Text(
+                randomSuggestions[index],
+                style: TextStyle(fontSize: 14, color: Colors.white), // 글자색을 흰색으로 설정
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     String titleText;
@@ -158,7 +209,7 @@ class _ChatPageState extends State<ChatPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(titleText)
+          title: Text(titleText)
       ),
       body: Column(
         children: [
@@ -191,6 +242,7 @@ class _ChatPageState extends State<ChatPage> {
                 ),
               ),
             ),
+          _buildSuggestedQuestions(), // 추천 질문 버튼들을 표시하는 위젯 추가
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
